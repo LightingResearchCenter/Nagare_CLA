@@ -15,7 +15,7 @@ spd = spd*tar_E;
 Vlamda = fileStruct.Vlamda;
 Vlambda = interp1(Vlamda(:,1),Vlamda(:,2),wavelength_spd,'linear',0.0);
 
-Vprime = fileStruct.VPrime;
+Vprime = fileStruct.Vprime;
 Vprime = interp1(Vprime(:,1),Vprime(:,2),wavelength_spd,'linear',0.0);
 Vprime = Vprime/max(Vprime);
 
@@ -33,8 +33,8 @@ Scone = Scone/(max(Scone));
 Vlambda = Vlambda./macularTi;
 Vlambda = Vlambda/max(Vlambda);
 
-%Melanopsin = load('Melanopsin with corrected lens.txt');
-Melanopsin = load('MelanopsinWlensBy2nm_02Oct2012.txt'); % lens data from Wyszecki and Stiles Table 1(2.4.6) Norren and Vos(1974) data
+%Melanopsin = load('Melanopsin with corrected lens.txt');  FILE NO LONGER EXIST
+Melanopsin = fileStruct.MelanopsinWlensBy2nm_02Oct2012; % lens data from Wyszecki and Stiles Table 1(2.4.6) Norren and Vos(1974) data
 M = interp1(Melanopsin(:,1),Melanopsin(:,2),wavelength_spd,'linear',0.0);
 %M = M/macularTi;
 M = M/max(M);
@@ -57,7 +57,7 @@ mel_response = trapz(wavelength_spd,M.*spd);
 
 scone_over_mel = scone_response/mel_response;
 
-BF_eff_func = load('CIE31by1.txt');
+BF_eff_func = fileStruct.CIE31by1;
 wave = BF_eff_func(:,1);
 BF_Vlambda = interp1(wave,BF_eff_func(:,3),wavelength_spd,'linear',0.0);
 % g = 3; 
