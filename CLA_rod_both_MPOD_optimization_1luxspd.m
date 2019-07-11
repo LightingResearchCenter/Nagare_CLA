@@ -7,6 +7,7 @@ function CLA = CLA_rod_both_MPOD_optimization_1luxspd(spd, tar_E, rodY, ofY, ofB
     if columns > 2
         error('Not column oriented data. Try transposing spd');
     end
+
     
     %% Calculate GAI
 GAI = GamutArea23Sep05(spd) * 13600;
@@ -29,6 +30,7 @@ wavelength_spd = spd(:,1);
 spd = spd(:,2);
 spd = (spd .* tar_E)/Lxy23Sep05([wavelength_spd,spd]);
 %spd = spd*tar_E;
+
 
 Vlamda = fileStruct.Vlamda;
 Vlambda = interp1(Vlamda(:,1),Vlamda(:,2),wavelength_spd,'linear',0.0);
