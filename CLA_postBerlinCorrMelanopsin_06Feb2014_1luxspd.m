@@ -8,9 +8,27 @@ function CLA = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(spd, tar_E,fileStr
 if columns > 2
     error('Not column oriented data. Try transposing spd');
 end
+    %% Calculate GAI
+GAI = GamutArea23Sep05(spd) * 13600;
+vd = exp(1-(1/(1+GAI)));
+
+% disp('GAI: ');
+% disp(GAI);
+% 
+% disp('vd: ');
+% disp(vd);
+
+%% Multiply variables by vividness
+rodY = rodY * vd;
+ofY = ofY * vd;
+ofB = ofB * vd;
+rodB = rodB * vd;
+
+%% Normalize SPD For Inputs
 wavelength_spd = spd(:,1);
 spd = spd(:,2);
-spd = spd*tar_E;
+spd = (spd .* tar_E)/Lxy23Sep05([wavelength_spd,spd]);
+%spd = spd*tar_E;
 
 Vlamda = fileStruct.Vlamda;
 Vlambda = interp1(Vlamda(:,1),Vlamda(:,2),wavelength_spd,'linear',0.0);
@@ -87,10 +105,10 @@ b2 = 0.0;                             %0.001
 k =  0.2616;                            %0.31 -- 0.2616 original / 0.2883 for 4K switch / 0.3116 Mc opt
 a3 = 0*3.300;  % a_rod  was 3.3 originally - now made 0 as new rod threshold term was added
 
-ofY = 1.4*3;   %1.4 for monochromatic  
-rodY = 1.1*3; %1.1 for monochromatic
-ofB = 0.81*3;  %0.81 for monochromatic
-rodB = 1.28*3;    %1.28 for monochromatic
+ofY = 1.4*vd;   %1.4 for monochromatic  
+rodY = 1.1*vd; %1.1 for monochromatic
+ofB = 0.81*vd;  %0.81 for monochromatic
+rodB = 1.28*vd;    %1.28 for monochromatic
 
         BminusY = (trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,Vlambda.*spd));
         if (trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,Vlambda.*spd)) >= 0
