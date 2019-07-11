@@ -4,40 +4,40 @@ close('all')
 
 typeoffit = 'original'; % best or original
 
-ZA = load('McClung_1h_2700K.txt');%
+ZA = fileStruct.McClung_1h_2700K;%
 supp_A = ZA(:,1)';
 % CLA_A_test = ZA(:,2)';
 Melanopic_A = ZA(:,3)';
 lux_A = ZA(:,4)';    
-A = load('spd_McClung_2700K_1lux.txt');
+A = fileStruct.spd_McClung_2700K_1lux;
 
-ZC = load('WL_1h_2700K_corr.txt');%
+ZC = fileStruct.WL_1h_2700K_corr;%
 supp_C = ZC(:,1)';
 % CLA_C_test = ZC(:,2)';
 Melanopic_C = ZC(:,3)';
 lux_C = ZC(:,4)';
-C = load('spd_WL_2700K_1lux.txt');
+C = fileStruct.spd_WL_2700K_1lux;
 
-ZE = load('Lumileds_1h_3000K.txt');%
+ZE = fileStruct.Lumileds_1h_3000K;%
 supp_E = ZE(:,1)';
 % CLA_E_test = ZE(:,2)';
 Melanopic_E = ZE(:,3)';
 lux_E = ZE(:,4)';    
-E = load('spd_Lumileds_3000K_1lux.txt');
+E = fileStruct.spd_Lumileds_3000K_1lux;
 
-ZF = load('Lumileds_1h_CG.txt');%
+ZF = fileStruct.Lumileds_1h_CG;%
 supp_F = ZF(:,1)';
 % CLA_F_test = ZF(:,2)';
 Melanopic_F = ZF(:,3)';
 lux_F = ZF(:,4)';    
-F = load('spd_Lumileds_CG_1lux.txt');
+F = fileStruct.spd_Lumileds_CG_1lux;
 
-ZG = load('Lumileds_1h_4000K.txt');%
+ZG = fileStruct.Lumileds_1h_4000K;%
 supp_G = ZG(:,1)';
 % CLA_G_test = ZG(:,2)';
 Melanopic_G = ZG(:,3)';
 lux_G = ZG(:,4)';    
-G = load('spd_Lumileds_4000K_1lux.txt');
+G = fileStruct.spd_Lumileds_4000K_1lux;
 
       
 CLA_A = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(A, lux_A);

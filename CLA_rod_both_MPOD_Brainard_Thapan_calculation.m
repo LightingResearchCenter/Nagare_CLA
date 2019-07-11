@@ -1,4 +1,4 @@
-function CLA = CLA_rod_both_MPOD_Brainard_Thapan_calculation(spd, rodY, ofY, ofB, rodB, mp, ma)
+function CLA = CLA_rod_both_MPOD_Brainard_Thapan_calculation(spd, rodY, ofY, ofB, rodB, mp, ma,fileStruct)
 
 % RN July 2019
 
@@ -10,17 +10,29 @@ end
 wavelength_spd = spd(:,1);
 spd = spd(:,2);
 
+<<<<<<< HEAD
+GAI = GamutArea23Sep05(spd) * 13600;
+vd = exp(1-(1/(1+GAI)));
+
+rodY = rodY * vd;
+ofY = ofY * vd;
+ofB = ofB * vd;
+rodB = rodB * vd;
+
 Vlamda = load('Vlamda.txt');
+=======
+Vlamda = fileStruct.Vlamda;
+>>>>>>> 0ffb0cc8df50d91ad1f764a2c3d54710bbb4253f
 Vlambda = interp1(Vlamda(:,1),Vlamda(:,2),wavelength_spd,'linear',0.0);
 
-Vprime = load('Vprime.txt');
+Vprime = fileStruct.Vprime;
 Vprime = interp1(Vprime(:,1),Vprime(:,2),wavelength_spd,'linear',0.0);
 Vprime = Vprime/max(Vprime);
 
-Scone = load('Scone.txt');
+Scone = fileStruct.Scone;
 Scone = interp1(Scone(:,1),Scone(:,2),wavelength_spd,'linear',0.0);
 
-Macula = load('MacularPigmentODfromSnodderly.txt');
+Macula = fileStruct.MacularPigmentODfromSnodderly;
 thickness = 1.0; % macular thickness factor
 macularT = 10.^(-Macula(:,2)*thickness);
 macularTi = interp1(Macula(:,1),macularT,wavelength_spd,'linear',1.0);
@@ -32,7 +44,7 @@ Vlambda = Vlambda./macularTi;
 Vlambda = Vlambda/max(Vlambda);
 
 %Melanopsin = load('Melanopsin with corrected lens.txt');
-Melanopsin = load('MelanopsinWlensBy2nm_02Oct2012.txt'); % lens data from Wyszecki and Stiles Table 1(2.4.6) Norren and Vos(1974) data
+Melanopsin = fileStruct.MelanopsinWlensBy2nm_02Oct2012; % lens data from Wyszecki and Stiles Table 1(2.4.6) Norren and Vos(1974) data
 M = interp1(Melanopsin(:,1),Melanopsin(:,2),wavelength_spd,'linear',0.0);
 %M = M/macularTi;
 M = M/max(M);
@@ -55,7 +67,7 @@ mel_response = trapz(wavelength_spd,M.*spd);
 scone_over_mel = scone_response/mel_response;
 
 
-BF_eff_func = load('CIE31by1.txt');
+BF_eff_func = fileStruct.CIE31by1;
 wave = BF_eff_func(:,1);
 BF_Vlambda = interp1(wave,BF_eff_func(:,3),wavelength_spd,'linear',0.0);
 % g = 3; 

@@ -1,22 +1,23 @@
 %
 clear
 close('all')
+fileStruct = loadAllTextFiles();
 
 typeoffit = 'best'; % best or original
 
-ZB = load('McClung_1h_6500K.txt');%
+ZB = fileStruct.McClung_1h_6500K;%
 supp_B = ZB(:,1)';
 % CLA_B_test = ZB(:,2)';
 Melanopic_B = ZB(:,3)';
 lux_B = ZB(:,4)';
-B = load('spd_McClung_6500K_1lux.txt');
+B = fileStruct.spd_McClung_6500K_1lux;
 
-ZD = load('WL_1h_5600K_corr.txt');%
+ZD = fileStruct.WL_1h_5600K_corr;%
 supp_D = ZD(:,1)';
 % CLA_D_test = ZD(:,2)';
 Melanopic_D = ZD(:,3)';
 lux_D = ZD(:,4)';
-D = load('spd_WL_5600K_1lux.txt');
+D = fileStruct.spd_WL_5600K_1lux;
 
 CLA_B = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(B, lux_B);
 CLA_D = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(D, lux_D);

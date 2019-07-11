@@ -1,10 +1,11 @@
 %
 clear
 close('all')
+fileStruct = loadAllTextFiles();
 
 wave = (380:1:780)';
 % Melanopic weighting function
-Melanopsin = load('MelanopsinWlensBy2nm_02Oct2012.txt'); % lens data from Wyszecki and Stiles Table 1(2.4.6) Norren and Vos(1974) data
+Melanopsin = fileStruct.MelanopsinWlensBy2nm_02Oct2012; % lens data from Wyszecki and Stiles Table 1(2.4.6) Norren and Vos(1974) data
 Melanopic = interp1(Melanopsin(:,1),Melanopsin(:,2),wave,'linear',0.0);
 %M = M/macularTi;
 Melanopic = Melanopic/max(Melanopic);
@@ -12,9 +13,18 @@ Melanopic = Melanopic/max(Melanopic);
 %Melanopic = M/M555;
 
 % Thapan et al. monochromatic suppressions and spectra
-[wavelengths, irr, supp] = textread('old thapan suppressions.txt', '%f %f %f', 'headerlines', 1);
-% [wavelengths, irr, supp] = textread('old thapan suppressions below 500.txt', '%f %f %f', 'headerlines', 1);
-% [wavelengths, irr, supp] = textread('old thapan suppressions above500.txt', '%f %f %f', 'headerlines', 1);
+wavelengths = fileStruct.old_thapan_suppressions.Wavelengths;
+irr = fileStruct.old_thapan_suppressions.Irr;
+supp = fileStruct.old_thapan_suppressions.Supp;
+
+% wavelengths = fileStruct.old_thapan_suppressions_below500.Wavelengths;
+% irr = fileStruct.old_thapan_suppressions_below500.Irr;
+% supp = fileStruct.old_thapan_suppressions_below500.Supp;
+
+% wavelengths = fileStruct.old_thapan_suppressions_above500.Wavelengths;
+% irr = fileStruct.old_thapan_suppressions_above500.Irr;
+% supp = fileStruct.old_thapan_suppressions_above500.Supp;
+
 wavelengthsThapan = wavelengths; % save for later plotting
 %correct for dilated pupils
 irr = 8.6*irr; 
@@ -28,16 +38,26 @@ for i1 = 1:length(wavelengths)
     supp_A(i1) = supp(i1);
 %     lux_A(i1) = Lxy23Sep05([A(:,1) A(:,2)]);
     irrad_A(i1) = trapz(A(:,1), A(:,2));
-    CLA_A(i1) = CLA_postBerlinCorrMelanopsin_06Feb2014([A(:,1) A(:,2)]);
+    CLA_A(i1) = CLA_postBerlinCorrMelanopsin_06Feb2014([A(:,1) A(:,2)],fileStruct);
 Melanopic_A(i1) = 843*trapz(A(:,1), MelanopicInterp.*A(:,2));
     %CLA(i) = spdtolux([A(:,1) A(:,2)]);
     %temp(i) = trapz(A(:,1), A(:,2));
 end
 
 % Brainard et al. monochromatic suppressions and spectra
-[wavelengths, irr, supp] = textread('old brainard suppressions.txt', '%f %f %f', 'headerlines', 1);
-% [wavelengths, irr, supp] = textread('old brainard suppressions below 500.txt', '%f %f %f', 'headerlines', 1);
-% [wavelengths, irr, supp] = textread('old brainard suppressions above500.txt', '%f %f %f', 'headerlines', 1);
+
+wavelengths = fileStruct.old_brainard_suppressions.Wavelengths;
+irr = fileStruct.old_brainard_suppressions.Irr;
+supp = fileStruct.old_brainard_suppressions.Supp;
+
+% wavelengths = fileStruct.old_brainard_suppressions_below500.Wavelengths;
+% irr = fileStruct.old_brainard_suppressions_below500.Irr;
+% supp = fileStruct.old_brainard_suppressions_below500.Supp;
+
+% wavelengths = fileStruct.old_brainard_suppressions_above500.Wavelengths;
+% irr = fileStruct.old_brainard_suppressions_above500.Irr;
+% supp = fileStruct.old_brainard_suppressions_above500.Supp;
+
 wavelengthsBrainard = wavelengths; % Save for later plotting 
 %correct for dilated pupils
 irr = 8.6*irr; 
@@ -49,7 +69,7 @@ for i1 = 1:length(wavelengths)
     supp_B(i1) = supp(i1);
 %     lux_B(i1) = Lxy23Sep05([A(:,1) A(:,2)]);
     irrad_B(i1) = trapz(A(:,1), A(:,2));
-    CLA_B(i1) = CLA_postBerlinCorrMelanopsin_06Feb2014([A(:,1) A(:,2)]);
+    CLA_B(i1) = CLA_postBerlinCorrMelanopsin_06Feb2014([A(:,1) A(:,2)],fileStruct);
     Melanopic_B(i1) = 843*trapz(A(:,1), MelanopicInterp.*A(:,2));
 end
 
