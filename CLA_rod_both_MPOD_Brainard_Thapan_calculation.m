@@ -10,7 +10,6 @@ end
 wavelength_spd = spd(:,1);
 spd = spd(:,2);
 
-<<<<<<< HEAD
 GAI = GamutArea23Sep05(spd) * 13600;
 vd = exp(1-(1/(1+GAI)));
 
@@ -19,10 +18,7 @@ ofY = ofY * vd;
 ofB = ofB * vd;
 rodB = rodB * vd;
 
-Vlamda = load('Vlamda.txt');
-=======
 Vlamda = fileStruct.Vlamda;
->>>>>>> 0ffb0cc8df50d91ad1f764a2c3d54710bbb4253f
 Vlambda = interp1(Vlamda(:,1),Vlamda(:,2),wavelength_spd,'linear',0.0);
 
 Vprime = fileStruct.Vprime;

@@ -3,7 +3,6 @@ clear;
 clc;
 fileStruct = loadAllTextFiles();
 %% Initialize Loop Variables
-<<<<<<< HEAD
 ofYtest = 1.40;
 ofYRange =ofYtest:0.01:ofYtest;  
 % ofYRange = 2.5:0.1:3.5;   % ofY = 1 for original model ON WARM SIDE
@@ -19,23 +18,6 @@ rodYRange =rodYtest:0.01:rodYtest;
 rodBtest = 1.28;
 rodBRange =rodBtest:0.01:rodBtest;   
 % rodBRange = 0.5:0.05:1.0;   % rodB = 0 for original model
-=======
-ofYtest = 1.40*3;
-% ofYRange =ofYtest:0.01:ofYtest;  
-ofYRange = 2.5:0.1:3.5;   % ofY = 1 for original model ON WARM SIDE
-
-ofBtest = 0.81*3;
-% ofBRange =ofBtest:0.01:ofBtest;  
-ofBRange = 0.5:0.05:1.0;   % ofB = 1 for original model ON COOL SIDE
-
-rodYtest = 1.1*3;
-% rodYRange =rodYtest:0.01:rodYtest;   
-rodYRange = 3.5:0.1:4.5;   % rodY = 0 for original model
-
-rodBtest = 1.28*3;
-% rodBRange =rodBtest:0.01:rodBtest;   
-rodBRange = 0.5:0.05:1.0;   % rodB = 0 for original model
->>>>>>> 0ffb0cc8df50d91ad1f764a2c3d54710bbb4253f
 
 mptest = 0.2;       % MPOD
 % mpRange =mptest:0.01:mptest;   
