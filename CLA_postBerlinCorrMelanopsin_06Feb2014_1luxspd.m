@@ -18,11 +18,6 @@ vd = exp(1-(1/(1+GAI)));
 % disp('vd: ');
 % disp(vd);
 
-%% Multiply variables by vividness
-rodY = rodY * vd;
-ofY = ofY * vd;
-ofB = ofB * vd;
-rodB = rodB * vd;
 
 %% Normalize SPD For Inputs
 wavelength_spd = spd(:,1);
