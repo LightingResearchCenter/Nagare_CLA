@@ -1,7 +1,7 @@
 %
 clear
 close('all')
-
+fileStruct = loadAllTextFiles();
 typeoffit = 'original'; % best or original
 
 ZA = fileStruct.McClung_1h_2700K;%
@@ -40,11 +40,11 @@ lux_G = ZG(:,4)';
 G = fileStruct.spd_Lumileds_4000K_1lux;
 
       
-CLA_A = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(A, lux_A);
-CLA_C = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(C, lux_C);
-CLA_E = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(E, lux_E);
-CLA_F = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(F, lux_F);
-CLA_G = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(G, lux_G);
+CLA_A = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(A, lux_A, fileStruct);
+CLA_C = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(C, lux_C, fileStruct);
+CLA_E = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(E, lux_E, fileStruct);
+CLA_F = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(F, lux_F, fileStruct);
+CLA_G = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(G, lux_G, fileStruct);
 
 
 % %**********

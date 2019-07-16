@@ -10,14 +10,14 @@ if columns > 2
 end
     %% Calculate GAI
 GAI = GamutArea23Sep05(spd) * 13600;
-vd = exp(1-(1/(1+GAI)));
+vd = exp(1.1-(1.1/(1+GAI)));
 
-% disp('GAI: ');
-% disp(GAI);
-% 
-% disp('vd: ');
-% disp(vd);
+%% Calculate Duv
+[~,DC,~] = CRI23Sep05(spd);
 
+%% Display Values
+tVal = table(GAI,vd,DC);
+%disp(tVal);
 
 %% Normalize SPD For Inputs
 wavelength_spd = spd(:,1);
@@ -73,8 +73,8 @@ scone_over_mel = scone_response/mel_response;
 BF_eff_func = fileStruct.CIE31by1;
 wave = BF_eff_func(:,1);
 BF_Vlambda = interp1(wave,BF_eff_func(:,3),wavelength_spd,'linear',0.0);
-% g = 3; 
-g = scone_over_mel; % 
+ g = 3; 
+%g = scone_over_mel; % 
 BrightnessFunction = BF_Vlambda + g*Scone;
 brightness = BrightnessFunction/max(BrightnessFunction); % normalize to max=1 (luminous efficiency)
 %--------------------------------------------------------------------------------------------------------------------
@@ -100,10 +100,10 @@ b2 = 0.0;                             %0.001
 k =  0.2616;                            %0.31 -- 0.2616 original / 0.2883 for 4K switch / 0.3116 Mc opt
 a3 = 0*3.300;  % a_rod  was 3.3 originally - now made 0 as new rod threshold term was added
 
-ofY = 1.4*vd;   %1.4 for monochromatic  
-rodY = 1.1*vd; %1.1 for monochromatic
-ofB = 0.81*vd;  %0.81 for monochromatic
-rodB = 1.28*vd;    %1.28 for monochromatic
+ofY = 3.2;%1.4*vd;   %1.4 for monochromatic  
+rodY = 3.5;%1.1*vd; %1.1 for monochromatic
+ofB = 0.7;%0.81*vd;  %0.81 for monochromatic
+rodB = 0.65;%1.28*vd;    %1.28 for monochromatic
 
         BminusY = (trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,Vlambda.*spd));
         if (trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,Vlambda.*spd)) >= 0
@@ -120,8 +120,8 @@ rodB = 1.28*vd;    %1.28 for monochromatic
             %disp(Rod)
             
         %     CS = (CS1 + CS2 - Rod);
-%             CS = ofB*(CS1 + CS2 - Rod - rodB*rod_over_brightness*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
-            CS = ofB*(CS1 + CS2 - Rod - (rodB*rod_over_brightness_E)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
+             CS = ofB*(CS1 + CS2 - Rod - rodB*rod_over_brightness*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
+            %CS = ofB*(CS1 + CS2 - Rod - (rodB*rod_over_brightness_E)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
 
             if CS < 0
                 CS(CS < 0) = 0; % Rod inhibition cannot make the CS less than zero
@@ -129,8 +129,8 @@ rodB = 1.28*vd;    %1.28 for monochromatic
             %disp('(B-Y) > 0')
         else
         %                 CS = a1*trapz(wavelength_spd,M.*P)-b1;
-%                         CS = ofY*(a1*trapz(wavelength_spd,M.*spd)-b1 - rodY*rod_over_brightness*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
-                        CS = ofY*(a1*trapz(wavelength_spd,M.*spd)-b1 - (rodY*rod_over_brightness_E)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
+                         CS = ofY*(a1*trapz(wavelength_spd,M.*spd)-b1 - rodY*rod_over_brightness*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
+                        %CS = ofY*(a1*trapz(wavelength_spd,M.*spd)-b1 - (rodY*rod_over_brightness_E)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
 
             if CS < 0
                 CS(CS < 0) = 0; % Negative values mean stimulus is below threshold set by constant b1

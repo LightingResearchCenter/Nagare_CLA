@@ -1,4 +1,4 @@
-function CLA = CLA_rod_both_MPOD_optimization_1luxspd(spd, tar_E, rodY, ofY, ofB, rodB, mp, ma,fileStruct)
+function CLA = CLA_rod_both_MPOD_optimization(spd, rodY, ofY, ofB, rodB, mp, ma,fileStruct)
 % RN July 2019
 % TO BE USED WITH ONLY 1 LUX SPDS AND DO PROVIDE A TARGET ILLUMINANCE AT
 % THE EYE
@@ -8,9 +8,12 @@ function CLA = CLA_rod_both_MPOD_optimization_1luxspd(spd, tar_E, rodY, ofY, ofB
         error('Not column oriented data. Try transposing spd');
     end
 
+%% Normalize SPD For Inputs
+wavelength_spd = spd(:,1);
+spd = spd(:,2);  
     
-    %% Calculate GAI
-GAI = GamutArea23Sep05(spd) * 13600;
+%% Calculate GAI
+GAI = GamutArea23Sep05([wavelength_spd, spd]) * 13600;
 vd = exp(1-(1/(1+GAI)));
 
 % disp('GAI: ');
@@ -20,17 +23,10 @@ vd = exp(1-(1/(1+GAI)));
 % disp(vd);
 
 %% Multiply variables by vividness
-rodY = rodY * vd;
-ofY = ofY * vd;
-ofB = ofB * vd;
-rodB = rodB * vd;
-
-%% Normalize SPD For Inputs
-wavelength_spd = spd(:,1);
-spd = spd(:,2);
-spd = (spd .* tar_E)/Lxy23Sep05([wavelength_spd,spd]);
-%spd = spd*tar_E;
-
+% rodY = rodY * vd;
+% ofY = ofY * vd;
+% ofB = ofB * vd;
+% rodB = rodB * vd;
 
 Vlamda = fileStruct.Vlamda;
 Vlambda = interp1(Vlamda(:,1),Vlamda(:,2),wavelength_spd,'linear',0.0);
@@ -82,8 +78,8 @@ scone_over_mel = scone_response/mel_response;
 BF_eff_func = fileStruct.CIE31by1;
 wave = BF_eff_func(:,1);
 BF_Vlambda = interp1(wave,BF_eff_func(:,3),wavelength_spd,'linear',0.0);
- %g = 3; 
-g = scone_over_mel; % 
+ g = 3; 
+%g = scone_over_mel; % 
 BrightnessFunction = BF_Vlambda + g*Scone;
 brightness = BrightnessFunction/max(BrightnessFunction); % normalize to max=1 (luminous efficiency)
 %--------------------------------------------------------------------------------------------------------------------
@@ -130,16 +126,16 @@ BminusY = (trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,Vlambda.*spd)
             %disp(Rod)
 
         %     CS = (CS1 + CS2 - Rod);
-             %CS = ofB*(CS1 + CS2 - Rod - rodB*(rod_over_brightness)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
-            CS = ofB*(CS1 + CS2 - Rod - rodB*(rod_over_brightness_E)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
+             CS = ofB*(CS1 + CS2 - Rod - rodB*(rod_over_brightness)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
+            %CS = ofB*(CS1 + CS2 - Rod - rodB*(rod_over_brightness_E)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
             if CS < 0
                 CS(CS < 0) = 0; % Rod inhibition cannot make the CS less than zero
             end
             %disp('(B-Y) > 0')
         else
         %     CS = a1*trapz(wavelength_spd,M.*P)-b1;
-             %CS = ofY*(a1*trapz(wavelength_spd,M.*P)-b1 - rodY*(rod_over_brightness)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
-            CS = ofY*(a1*trapz(wavelength_spd,M.*P)-b1 - rodY*(rod_over_brightness_E)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
+             CS = ofY*(a1*trapz(wavelength_spd,M.*P)-b1 - rodY*(rod_over_brightness)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
+            %CS = ofY*(a1*trapz(wavelength_spd,M.*P)-b1 - rodY*(rod_over_brightness_E)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
 
 
             if CS < 0

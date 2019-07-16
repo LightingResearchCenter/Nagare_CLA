@@ -1,22 +1,15 @@
-function CLA = CLA_rod_both_MPOD_Brainard_Thapan_calculation(spd, rodY, ofY, ofB, rodB, mp, ma,fileStruct)
+function CLA = CLA_rod_both_MPOD_calculation_Test2(spd, rodY, ofY, ofB, rodB, mp, ma,fileStruct)
 
 % RN July 2019
-
-[rows columns] = size(spd);
-if columns > 2
-    error('Not column oriented data. Try transposing spd');
-end
-    
 wavelength_spd = spd(:,1);
-spd = spd(:,2);
+spd = spd(:,2:end);
 
-
-GAI = GamutArea23Sep05([wavelength_spd, spd]) * 13600;
-vd = exp(1-(1/(1+GAI)));
+GAI_test = GamutArea23Sep05_test([wavelength_spd, spd])' * 13600;
+vd = exp(1.1-(1.1./(1+GAI_test)));
 
 rodY = rodY * vd;
-ofY = ofY * vd;
-ofB = ofB * vd;
+%ofY = ofY * vd;
+%ofB = ofB * vd;
 rodB = rodB * vd;
 
 
@@ -68,16 +61,16 @@ scone_over_mel = scone_response/mel_response;
 BF_eff_func = fileStruct.CIE31by1;
 wave = BF_eff_func(:,1);
 BF_Vlambda = interp1(wave,BF_eff_func(:,3),wavelength_spd,'linear',0.0);
-% g = 3; 
-g = scone_over_mel; 
+ g = 3; 
+%g = scone_over_mel; 
 BrightnessFunction = BF_Vlambda + g*Scone;
 brightness = BrightnessFunction/max(BrightnessFunction); %  normalize to max=1 (luminous efficiency)
 
 brightness_response = trapz(wavelength_spd,brightness.*spd);
-rod_over_brightness = rod_response/brightness_response;
+rod_over_brightness = rod_response./brightness_response;
 c1 = 0.81;
 c2 = 0.3;
-rod_over_brightness_E = c1*exp(1-c2/rod_over_brightness);
+rod_over_brightness_E = c1*exp(1-c2./rod_over_brightness);
 
 %--------------------------------------------------------------------------------------------------------------------
 
@@ -96,43 +89,37 @@ a3 = 0*3.300;  % a_rod  was 3.3 originally - made 0 now as a new rod threshold t
 
 %-------------------------------------------------------------------------
 P = spd;
+            %% Set B - Y
+            byIdx = (trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,Vlambda.*spd)) >= 0;
+            CS = nan(size(byIdx));
+            
+            %% B - Y Response
+            CS1 = (a1*trapz(wavelength_spd,M.*spd)-b1).*byIdx;
 
-        if (trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,Vlambda.*spd)) >= 0
+            CS1(CS1 < 0) = 0; % remove negative values that are below threshold set by constant b1.
 
-            CS1 = a1*trapz(wavelength_spd,M.*spd)-b1;
+            CS2 = (a2*(trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,Vlambda.*spd))-b2).*byIdx;
+            CS2(CS2 < 0) = 0; % This is the important diode operator, the (b-y) term cannot be less than zero
 
-            if CS1 < 0
-                CS1(CS1 < 0) = 0; % remove negative values that are below threshold set by constant b1.
-            end
-
-            CS2 = a2*(trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,Vlambda.*spd))-b2;
-
-            if CS2 < 0
-                CS2(CS2 < 0) = 0; % This is the important diode operator, the (b-y) term cannot be less than zero
-            end
-
-            Rod = a3*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)); %*(1 - exp(-20*(trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,V10.*spd))));
+            Rod = (a3*(1-exp(-trapz(wavelength_spd,Vprime.*spd)./rodSat))).*byIdx; %*(1 - exp(-20*(trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,V10.*spd))));
             %disp(Rod)
             
     %         CS = (CS1 + CS2 - Rod);
-%             CS = ofB*(CS1 + CS2 - Rod - rodB*(rod_over_brightness)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
-            CS = ofB*(CS1 + CS2 - Rod - rodB*(rod_over_brightness_E)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
+            CSa = (ofB*(CS1 + CS2 - Rod - rodB.*(rod_over_brightness).*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)))).*byIdx;
+            %CS = ofB*(CS1 + CS2 - Rod - rodB*(rod_over_brightness_E)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
             
-            if CS < 0
-                CS(CS < 0) = 0; % Rod inhibition cannot make the CS less than zero
-            end
-            %disp('(B-Y) > 0')
-        else
+            CSa(CSa < 0) = 0; % Rod inhibition cannot make the CS less than zero
+            disp('(B-Y) > 0')
+        %% Melaniopsin Response
     %             CS = a1*trapz(wavelength_spd,M.*spd)-b1;
     %         CS = ofY*a1*trapz(wavelength_spd,M.*P)-b1 - rodY*(a3*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
-%             CS = ofY*(a1*trapz(wavelength_spd,M.*P)-b1 - rodY*(rod_over_brightness)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
-            CS = ofY*(a1*trapz(wavelength_spd,M.*P)-b1 - rodY*(rod_over_brightness_E)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
+            CSb = (ofY*(a1*trapz(wavelength_spd,M.*P)-b1 - rodY.*(rod_over_brightness).*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)))).*(~byIdx);
+            %CS = ofY*(a1*trapz(wavelength_spd,M.*P)-b1 - rodY*(rod_over_brightness_E)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
 
-            if CS < 0
-                CS(CS < 0) = 0; % Negative values mean stimulus is below threshold set by constant b1
-            end
+            CSb(CSb < 0) = 0; % Negative values mean stimulus is below threshold set by constant b1
             %disp('(B-Y) < 0')
-        end
-
-CLA = CS*1547.9; % originally used to CLA equal to photopic value for 1000 lux of 2856 K. Was 1622.5 prior to 27-Jun-2014 
+        %end
+CS(byIdx) = CSa(byIdx);
+CS(~byIdx) = CSb(~byIdx);
+CLA = CS.*1547.9; % originally used to CLA equal to photopic value for 1000 lux of 2856 K. Was 1622.5 prior to 27-Jun-2014 
 % CSe = 0.7*(1-(1/(1+(CLA/355.7)^1.1026)));

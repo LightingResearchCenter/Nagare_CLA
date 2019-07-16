@@ -23,7 +23,7 @@ wave = (420:5:600)'; % Wavelength range for calculations
 criterion = 300; % Criterion response in units of CLA ("Circadian Light"). CLA is numerically equal to lux for CIE Illuminant A
 
 criterionIrrad = zeros(size(wave)); % initialize array
-parfor j = 1:length(wave)
+for j = 1:length(wave)
     spd = zeros(length(wave),1);
     spd(j) = 1;
     steps = -4:0.2:3; % steps of log10(irradiance) (W/m^2)
@@ -34,7 +34,7 @@ parfor j = 1:length(wave)
         P = spd*irrad(i); % scaled spd
  
         % CLA is "Circadian Light" as given by the phototranduction model
-        CLA(i) = CLA_postBerlinCorrMelanopsin_06Feb2014([wave P],fileStruct);
+        CLA(i) = CLA_postBerlinCorrMelanopsin_06Feb2014_Testing([wave P],fileStruct);
         
     end
     criterionIrrad(j) = interp1(CLA,irrad,criterion,'linear'); % find the irradiance that gives the criterion response
