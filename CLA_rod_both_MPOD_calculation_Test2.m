@@ -1,15 +1,15 @@
-function CLA = CLA_rod_both_MPOD_calculation_Test2(spd, rodY, ofY, ofB, rodB, mp, ma,fileStruct)
+function CLA = CLA_rod_both_MPOD_calculation_Test2(spd, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct)
 
 % RN July 2019
 wavelength_spd = spd(:,1);
 spd = spd(:,2:end);
 
 GAI_test = GamutArea23Sep05_test([wavelength_spd, spd])' * 13600;
-vd = exp(1.1-(1.1./(1+GAI_test)));%1-(1./(1+GAI_test));%
+vd = ivdb.^(1-(1./(1+GAI_test)));%exp(1.1-(1.1./(1+GAI_test)));%
 
 rodY = rodY * vd;
-ofY = ofY * vd;
-ofB = ofB * vd;
+%ofY = ofY * vd;
+%ofB = ofB * vd;
 rodB = rodB * vd;
 
 

@@ -1,4 +1,4 @@
-function [maxrsq] = CLA_McClung_WL_Lumileds_rod_MPOD_func_Test2(rodY, ofY, ofB, rodB, mp, ma,fileStruct)
+function [maxrsq] = CLA_McClung_WL_Lumileds_rod_MPOD_func_Test2(rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct)
 
     typeoffit = 'original'; % best or original **** CHECK crange for BEST CASE
 
@@ -29,7 +29,7 @@ function [maxrsq] = CLA_McClung_WL_Lumileds_rod_MPOD_func_Test2(rodY, ofY, ofB, 
     
     %% Combine SPDs 
 
-    CLA = CLA_rod_both_MPOD_calculation_Test2(white_light_data, rodY, ofY, ofB, rodB, mp, ma,fileStruct);
+    CLA = CLA_rod_both_MPOD_calculation_Test2(white_light_data, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
 
     CLA = CLA';
     supp = vertcat(supp_A',supp_B',supp_C',supp_D',supp_E',supp_F',supp_G');
