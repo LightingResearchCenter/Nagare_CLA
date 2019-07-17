@@ -1,12 +1,12 @@
 function [maxrsq] = CLA_FIT_Brainard_Thapan_FEB_2019_rod_both_MPOD_func_Test2(rodY,ofY,ofB,rodB,mp,ma,ivbd,fileStruct)
 
 %% Thapan Data
-supp_A = fileStruct.old_thapan.Supp';
+supp_A = fileStruct.old_thapan.Supp;
 A = [fileStruct.old_thapan.Wavelengths,fileStruct.old_thapan.SPD];
 CLA_A = CLA_rod_both_MPOD_calculation_Test2(A, rodY, ofY, ofB, rodB, mp, ma,ivbd,fileStruct);
 
 %% Brainard et al. monochromatic suppressions and spectra
-supp_B = fileStruct.old_brainard.Supp';
+supp_B = fileStruct.old_brainard.Supp;
 B = [fileStruct.old_brainard.Wavelengths,fileStruct.old_brainard.SPD];
 CLA_B = CLA_rod_both_MPOD_calculation_Test2(B, rodY, ofY, ofB, rodB, mp, ma,ivbd,fileStruct);
 %% Compute logistic
