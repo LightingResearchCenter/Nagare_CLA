@@ -4,7 +4,7 @@ function CLA = CLA_rod_both_MPOD_calculation_Test2(spd, rodY, ofY, ofB, rodB, mp
 wavelength_spd = spd(:,1);
 spd = spd(:,2:end);
 
-GAI_test = GamutArea23Sep05_test([wavelength_spd, spd])' * 13600;
+GAI_test = GamutArea23Sep05_test([wavelength_spd, spd],fileStruct)' * 13600;
 vd = ivdb.^(1-(1./(1+GAI_test)));%exp(1.1-(1.1./(1+GAI_test)));%
 
 rodY = rodY * vd;

@@ -1,7 +1,7 @@
 %% Set Up
 clear;
 clc;
-fileStruct = loadAllTextFiles();
+fileStruct = loadAllTextFiles2();
 %% Initialize Loop Variables
 
 ofYtest = 3.2;%1.40;%

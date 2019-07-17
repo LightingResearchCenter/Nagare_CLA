@@ -1,9 +1,9 @@
-function Areauvprime = GamutArea23Sep05_test(spd)
+function Areauvprime = GamutArea23Sep05_test(spd,fileStruct)
 
 wavelength_spd = spd(:,1);
 spd = spd(:,2:end);
 %load('CIE31_1', 'wavelength','xbar','ybar','zbar');
-Table = load('CIE31by1.txt');
+Table = fileStruct.CIE31by1;
 wavelength = Table(:,1);
 xbar = Table(:,2);
 ybar = Table(:,3);
@@ -16,7 +16,7 @@ zbar = interp1(wavelength,zbar,wavelength_spd);
 zbar(isnan(zbar)) = 0.0;
 
 %********************* CRI Test Color Samples Chromaticity Calc ****************
-TCS = load('Tcs14_23Sep09.txt');
+TCS = fileStruct.TCS;
 %Interpolate TCS values from 5 nm to spd nm increments
 TCS_1 = zeros(length(wavelength_spd),14);
 wavelength_5 = TCS(:,1);
