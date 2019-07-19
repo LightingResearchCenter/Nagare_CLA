@@ -5,7 +5,7 @@ wavelength_spd = spd(:,1);
 spd = spd(:,2:end);
 
 GAI_test = GamutArea23Sep05_test([wavelength_spd, spd],fileStruct)' * 13600;
-vd = ivdb.^(1-(1./(1+GAI_test)));%exp(1.1-(1.1./(1+GAI_test)));%
+vd = ivdb.^(1-(.01./(.01+GAI_test)));%exp(1.1-(1.1./(1+GAI_test)));%
 
 rodY = rodY * vd;
 %ofY = ofY * vd;
@@ -94,18 +94,18 @@ P = spd;
             CS = nan(size(byIdx));
             
             %% B - Y Response
-            CS1 = (a1*trapz(wavelength_spd,M.*spd)-b1).*byIdx;
+            CS1 = (a1*trapz(wavelength_spd,M.*spd)-b1);
 
             CS1(CS1 < 0) = 0; % remove negative values that are below threshold set by constant b1.
 
-            CS2 = (a2*(trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,Vlambda.*spd))-b2).*byIdx;
+            CS2 = (a2*(trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,Vlambda.*spd))-b2);
             CS2(CS2 < 0) = 0; % This is the important diode operator, the (b-y) term cannot be less than zero
 
             Rod = (a3*(1-exp(-trapz(wavelength_spd,Vprime.*spd)./rodSat))).*byIdx; %*(1 - exp(-20*(trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,V10.*spd))));
             %disp(Rod)
             
     %         CS = (CS1 + CS2 - Rod);
-            CSa = (ofB.*(CS1 + CS2 - Rod - rodB.*(rod_over_brightness).*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)))).*byIdx;
+            CSa = (ofB.*(CS1 + CS2 - Rod - rodB.*(rod_over_brightness).*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat))));
             %CS = ofB*(CS1 + CS2 - Rod - rodB*(rod_over_brightness_E)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
             
             CSa(CSa < 0) = 0; % Rod inhibition cannot make the CS less than zero
@@ -113,7 +113,7 @@ P = spd;
         %% Melaniopsin Response
     %             CS = a1*trapz(wavelength_spd,M.*spd)-b1;
     %         CS = ofY*a1*trapz(wavelength_spd,M.*P)-b1 - rodY*(a3*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
-            CSb = (ofY.*(a1*trapz(wavelength_spd,M.*P)-b1 - rodY.*(rod_over_brightness).*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)))).*(~byIdx);
+            CSb = (ofY.*(a1*trapz(wavelength_spd,M.*P)-b1 - rodY.*(rod_over_brightness).*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat))));
             %CS = ofY*(a1*trapz(wavelength_spd,M.*P)-b1 - rodY*(rod_over_brightness_E)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
 
             CSb(CSb < 0) = 0; % Negative values mean stimulus is below threshold set by constant b1

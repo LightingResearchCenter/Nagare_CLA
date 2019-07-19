@@ -4,21 +4,21 @@ clc;
 fileStruct = loadAllTextFiles2();
 %% Initialize Loop Variables
 
-ofYtest = 3.2;%1.40;%
-%ofYRange =ofYtest-.5:0.5:ofYtest+.5;  
-ofYRange = 0.5:0.1:5.0;   % ofY = 1 for original model ON WARM SIDE
+ofYtest = 3.1;%1.40;%
+ofYRange =ofYtest:0.5:ofYtest;  
+%ofYRange = 0.5:0.1:3.0;   % ofY = 1 for original model ON WARM SIDE
 
-ofBtest = 0.7;%0.81;%
-%ofBRange =ofBtest:0.5:ofBtest;  
-ofBRange = 0.1:0.05:1.5;   % ofB = 1 for original model ON COOL SIDE
+ofBtest = 0.85;%0.81;%
+ofBRange =ofBtest:0.5:ofBtest;  
+%ofBRange = 0.1:0.1:1.5;   % ofB = 1 for original model ON COOL SIDE
 
-rodYtest = 3.5;%1.1;%
-%rodYRange =rodYtest-.5:0.5:rodYtest+.5;   
-rodYRange = 1.0:0.1:5.0;   % rodY = 0 for original model
+rodYtest = 0.95;%1.1;%
+rodYRange =rodYtest:0.5:rodYtest;   
+%rodYRange = 1.0:0.1:3.0;   % rodY = 0 for original model
 
-rodBtest = 0.65;%1.28;%
-%rodBRange =rodBtest:0.5:rodBtest;   
-rodBRange = 1.0:0.05:1.5;   % rodB = 0 for original model
+rodBtest = 0.45;%1.28;%
+rodBRange =rodBtest:0.5:rodBtest;   
+%rodBRange = 1.0:0.1:1.5;   % rodB = 0 for original model
 
 mptest = 0.2;       % MPOD
  mpRange =mptest:0.01:mptest;   
@@ -28,8 +28,9 @@ matest = 0.35;       % MPOD attenuation
  maRange =matest:0.01:matest;   
 %maRange = 0:0.5:1;   % ma = 0 for original model
 
-vdBasetest = 0;
-vdBaseRange = 1.0:0.5:5.0;
+vdBasetest = 3.75;
+vdBaseRange = vdBasetest:0.5:vdBasetest;
+%vdBaseRange = 1.0:0.5:5.0;
 
 rsq1Best = 0;
 rsq2Best = 0;
@@ -49,7 +50,6 @@ for irodY = rodYRange
                 for imp = mpRange
                     for ima = maRange
                         for ivdb = vdBaseRange
-            
                           rsqs(1) = CLA_McClung_WL_Lumileds_rod_MPOD_func_Test2(irodY,iOFY,iOFB,irodB,imp,ima,ivdb,fileStruct);
     %                     rsq = CLA_McClung_WL_Lumileds_warm_4K_rod_MPOD_func(irodY,iOFY,iOFB,irodB,imp,ima,fileStruct);                    
     %                     rsq = CLA_McClung_WL_Lumileds_Cool_rod_MPOD_func(irodY,iOFY,iOFB,irodB,imp,ima,fileStruct); % no ofb yet
