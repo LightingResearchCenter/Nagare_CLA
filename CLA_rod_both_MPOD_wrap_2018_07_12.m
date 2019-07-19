@@ -6,19 +6,19 @@ fileStruct = loadAllTextFiles2();
 
 ofYtest = 3.2;%1.40;%
 %ofYRange =ofYtest-.5:0.5:ofYtest+.5;  
-ofYRange = 0.5:0.1:5.0;   % ofY = 1 for original model ON WARM SIDE
+ofYRange = 2.5:0.1:3.5;   % ofY = 1 for original model ON WARM SIDE
 
 ofBtest = 0.7;%0.81;%
 %ofBRange =ofBtest:0.5:ofBtest;  
-ofBRange = 0.1:0.05:1.5;   % ofB = 1 for original model ON COOL SIDE
+ofBRange = 0.75:0.05:1.25;   % ofB = 1 for original model ON COOL SIDE
 
 rodYtest = 3.5;%1.1;%
 %rodYRange =rodYtest-.5:0.5:rodYtest+.5;   
-rodYRange = 1.0:0.1:5.0;   % rodY = 0 for original model
+rodYRange = 0.75:0.05:1.2;   % rodY = 0 for original model
 
 rodBtest = 0.65;%1.28;%
 %rodBRange =rodBtest:0.5:rodBtest;   
-rodBRange = 1.0:0.05:1.5;   % rodB = 0 for original model
+rodBRange = 0.25:0.05:1;   % rodB = 0 for original model
 
 mptest = 0.2;       % MPOD
  mpRange =mptest:0.01:mptest;   
@@ -29,10 +29,11 @@ matest = 0.35;       % MPOD attenuation
 %maRange = 0:0.5:1;   % ma = 0 for original model
 
 vdBasetest = 0;
-vdBaseRange = 1.0:0.5:5.0;
+vdBaseRange = 3.0:0.05:4.0;
 
 rsq1Best = 0;
 rsq2Best = 0;
+rsq3Best = 0;
 rodYBest = 0;
 rodBBest = 0;
 ofYBest = 0;
@@ -43,8 +44,11 @@ maxrsq = 0;
 
 %% Loops
 for irodY = rodYRange
+    irodY
     for iOFY = ofYRange
+        iOFY
         for iOFB = ofBRange
+            iOFB
             for irodB = rodBRange
                 for imp = mpRange
                     for ima = maRange
@@ -56,7 +60,7 @@ for irodY = rodYRange
 
                            %rsq2 = CLA_FIT_Brainard_Thapan_FEB_2019_rod_both_MPOD_func_Test(irodY,iOFY,iOFB,irodB,imp,ima,fileStruct);
                            rsqs(2) = CLA_FIT_Brainard_Thapan_FEB_2019_rod_both_MPOD_func_Test2(irodY,iOFY,iOFB,irodB,imp,ima,ivdb,fileStruct);
-
+                            rsqs(3) = generateMonochromaticSpectralResponseOfModel_efficacy_Func(irodY, iOFY, iOFB, irodB, imp, ima,ivdb,fileStruct);
                            rsqs(rsqs < 0) = 0;
 
                            rsq = sum(rsqs);
@@ -65,6 +69,7 @@ for irodY = rodYRange
                                 maxrsq = rsq
                                 rsq1Best = rsqs(1);
                                 rsq2Best = rsqs(2);
+                                rsq3Best = rsqs(3);
                                 rodYBest = irodY;
                                 ofYBest = iOFY;
                                 ofBBest = iOFB;
@@ -83,5 +88,5 @@ end
 %max_R2 = round(maxrsq,4)
 % ofY___rodY = [ofYBest rodYBest]
 % ofB___rodB = [ofBBest rodBBest]
-rqsBest = [rsq1Best rsq2Best]
-ofY___rodY___ofB___rodB = [ofYBest rodYBest ofBBest rodBBest] % display optimized coefficients
+rqsBest = [rsq1Best rsq2Best rsq3Best]
+ofY___rodY___ofB___rodB___VDBase = [ofYBest rodYBest ofBBest rodBBest vdBaseBest] % display optimized coefficients

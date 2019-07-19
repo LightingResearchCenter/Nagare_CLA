@@ -17,10 +17,18 @@ BandT = [420 0.256; ...
          600 0.0282];
 waveBT = BandT(:,1);
 BT = BandT(:,2);
-fileStruct = loadAllTextFiles();
+fileStruct = loadAllTextFiles2();
 wave = (420:5:600)'; % Wavelength range for calculations
 
 criterion = 300; % Criterion response in units of CLA ("Circadian Light"). CLA is numerically equal to lux for CIE Illuminant A
+
+rodY = 0.95;
+ofY = 3.1;
+ofB = 0.85;
+rodB = 0.45;
+mp = 0.2;
+ma = 0.35;
+ivdb = 3.75;
 
 criterionIrrad = zeros(size(wave)); % initialize array
 for j = 1:length(wave)
@@ -34,7 +42,7 @@ for j = 1:length(wave)
         P = spd*irrad(i); % scaled spd
  
         % CLA is "Circadian Light" as given by the phototranduction model
-        CLA(i) = CLA_postBerlinCorrMelanopsin_06Feb2014_Testing([wave P],fileStruct);
+        CLA(i) = CLA_rod_both_MPOD_calculation_Test2([wave P], rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
         
     end
     criterionIrrad(j) = interp1(CLA,irrad,criterion,'linear'); % find the irradiance that gives the criterion response
@@ -56,9 +64,10 @@ plot(waveBT,BT,'rd')
 % HL1 = legend('Original Model', 'Brainard and Thapan');
 % HL1 = legend('Brainard and Thapan: Rod-Brightness model', 'rodB-ofB 0.1-1.0 a3-1.0, rodY-ofY 0.1-1.2, g3');
 %         HL1 = legend('E-ratio; g= s/mel; ofB 0.85, rodB 0.75, ofY 1.5, rodY 1.1', 'Brainard and Thapan 0.2MPOD35');
-HL1 = legend('Parameters: ofB 0.8, rodB 1.3, ofY 1.4, rodY 1.1', 'Brainard and Thapan 0.2MPOD35');
+HL1 = legend(sprintf('Parameters: ofB %0.2f, rodB %0.2f, ofY %0.2f, rodY %0.2f',ofB,rodB,ofY,rodY),'Brainard and Thapan 0.2MPOD35');
 % HL1 = legend('Rod-brightness: ofY = ofB = 1.4, rodY = 0.2, rodB = 0.08', 'Brainard and Thapan: 0.2 MPOD at 35%');
 xlabel('Wavelength (nm)','FontSize',16);
 ylabel('Efficiency','FontSize',16);
 set(gca,'FontSize',16);
 set(HL1,'FontSize',13);
+hold off

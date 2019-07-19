@@ -86,10 +86,10 @@ k =  0.2616;
 a3 = 0*3.300;  % a_rod  was 3.3 originally - made 0 in the new model and new rod threshold added
 
 
-ofB = 0.81;
-rodB = 1.28; % rod inhibition multiplier on the cool side - is 1 originally
-ofY = 1.4;  % of_last_used = 1.5; of = 0.55 for McClung optimized; 0.8 for MC+WL+Lum; 0.75 for for MC+WL+Lum (0.2 MPOD 35%)
-rodY = 1.1; % rod inhibition multiplier on the warm side - is 0 originally
+ofB = 0.85;
+rodB = 0.45; % rod inhibition multiplier on the cool side - is 1 originally
+ofY = 3.1;  % of_last_used = 1.5; of = 0.55 for McClung optimized; 0.8 for MC+WL+Lum; 0.75 for for MC+WL+Lum (0.2 MPOD 35%)
+rodY = 0.95; % rod inhibition multiplier on the warm side - is 0 originally
 
  if (trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,Vlambda.*spd)) >= 0
     

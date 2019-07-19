@@ -5,7 +5,7 @@ wavelength_spd = spd(:,1);
 spd = spd(:,2:end);
 
 GAI_test = GamutArea23Sep05_test([wavelength_spd, spd],fileStruct)' * 13600;
-vd = ivdb.^(1-(1./(1+GAI_test)));%exp(1.1-(1.1./(1+GAI_test)));%
+vd = ivdb.^(1-(.01./(.01+GAI_test)));%exp(1.1-(1.1./(1+GAI_test)));%
 
 rodY = rodY * vd;
 %ofY = ofY * vd;
