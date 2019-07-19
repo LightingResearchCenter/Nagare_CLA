@@ -4,6 +4,7 @@ clc;
 fileStruct = loadAllTextFiles2();
 %% Initialize Loop Variables
 
+
 ofYtest = 3.2;%1.40;%
 %ofYRange =ofYtest-.5:0.5:ofYtest+.5;  
 ofYRange = 2.5:0.1:3.5;   % ofY = 1 for original model ON WARM SIDE
@@ -27,6 +28,7 @@ mptest = 0.2;       % MPOD
 matest = 0.35;       % MPOD attenuation
  maRange =matest:0.01:matest;   
 %maRange = 0:0.5:1;   % ma = 0 for original model
+
 
 vdBasetest = 0;
 vdBaseRange = 3.0:0.05:4.0;
@@ -53,7 +55,6 @@ for irodY = rodYRange
                 for imp = mpRange
                     for ima = maRange
                         for ivdb = vdBaseRange
-            
                           rsqs(1) = CLA_McClung_WL_Lumileds_rod_MPOD_func_Test2(irodY,iOFY,iOFB,irodB,imp,ima,ivdb,fileStruct);
     %                     rsq = CLA_McClung_WL_Lumileds_warm_4K_rod_MPOD_func(irodY,iOFY,iOFB,irodB,imp,ima,fileStruct);                    
     %                     rsq = CLA_McClung_WL_Lumileds_Cool_rod_MPOD_func(irodY,iOFY,iOFB,irodB,imp,ima,fileStruct); % no ofb yet
