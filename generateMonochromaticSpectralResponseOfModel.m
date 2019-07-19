@@ -22,13 +22,13 @@ wave = (420:5:600)'; % Wavelength range for calculations
 
 criterion = 300; % Criterion response in units of CLA ("Circadian Light"). CLA is numerically equal to lux for CIE Illuminant A
 
-rodY = 0.95;
-ofY = 3.1;
-ofB = 0.85;
-rodB = 0.45;
+rodY = 0.8;
+ofY = 2.7;
+ofB = 0.95;
+rodB = 0.6;
 mp = 0.2;
 ma = 0.35;
-ivdb = 3.75;
+ivdb = 4.0;
 
 criterionIrrad = zeros(size(wave)); % initialize array
 for j = 1:length(wave)

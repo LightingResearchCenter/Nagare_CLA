@@ -24,28 +24,26 @@ criterion = 300; % Criterion response in units of CLA ("Circadian Light"). CLA i
 
 criterionIrrad = zeros(size(wave)); % initialize array
 
-rodY = 0.95;
-ofY = 3.1;
-ofB = 0.85;
-rodB = 0.45;
+rodY = 0.8;
+ofY = 2.7;
+ofB = 0.95;
+rodB = 0.6;
 mp = 0.2;
 ma = 0.35;
-ivdb = 3.75;
-
+ivdb = 4.0;
+criterionIrrad = zeros(size(wave)); % initialize array
+steps = -4:0.2:3;% steps of log10(irradiance) (W/m^2)
 for j = 1:length(wave)
     spd = zeros(length(wave),1);
     spd(j) = 1;
-    steps = -4:0.2:3; % steps of log10(irradiance) (W/m^2)
-    CLA = zeros(length(steps),1);
-    irrad = zeros(length(steps),1);
-    for i = 1:length(steps)
-        irrad(i) = 10^steps(i); % irradiance (W/m^2)
-        P = spd*irrad(i); % scaled spd
-        
-        % CLA is "Circadian Light" as given by the phototranduction model
-        CLA(i) = CLA_rod_both_MPOD_calculation_Test2([wave P], rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
-        
-    end
+    
+    irrad = 10.^steps; % irradiance (W/m^2)
+    
+    P = spd.*irrad; % scaled spd
+    
+    % CLA is "Circadian Light" as given by the phototranduction model
+    CLA = CLA_rod_both_MPOD_calculation_Test2([wave P], rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
+    
     criterionIrrad(j) = interp1(CLA,irrad,criterion,'linear'); % find the irradiance that gives the criterion response
     %     display(['Wavelength = ' num2str(wave(j),'%d') ' nm; Stimulus for criterion response = ' num2str(criterionIrrad(j)) ' W/m^2']);
 end
