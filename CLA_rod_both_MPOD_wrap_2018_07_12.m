@@ -6,20 +6,20 @@ fileStruct = loadAllTextFiles2();
 
 
 ofYtest = 1;%1.40;%
-ofYRange =ofYtest-.5:0.5:ofYtest+.5;
-%ofYRange = 0.1:0.1:2.5;   % ofY = 1 for original model ON WARM SIDE
+%ofYRange =ofYtest:0.5:ofYtest;
+ofYRange = 0.1:0.1:2.5;   % ofY = 1 for original model ON WARM SIDE
 
 ofBtest = 0.95;%0.81;%
-%ofBRange =ofBtest:0.5:ofBtest;
-ofBRange = 0.75:0.05:1.25;   % ofB = 1 for original model ON COOL SIDE
+ofBRange =ofBtest:0.5:ofBtest;
+%ofBRange = 0.75:0.05:1.25;   % ofB = 1 for original model ON COOL SIDE
 
 rodYtest = 0.05;%1.1;%
-rodYRange =rodYtest-.5:0.5:rodYtest+.5;
-%rodYRange = 0.05:0.05:1.0;   % rodY = 0 for original model
+%rodYRange =rodYtest:0.5:rodYtest;
+rodYRange = 0.05:0.05:1.5;   % rodY = 0 for original model
 
 rodBtest = 0.6;%1.28;%
-%rodBRange =rodBtest:0.5:rodBtest;
-rodBRange = 0.25:0.05:1;   % rodB = 0 for original model
+rodBRange =rodBtest:0.5:rodBtest;
+%rodBRange = 0.25:0.05:1;   % rodB = 0 for original model
 
 mptest = 0.2;       % MPOD
 mpRange =mptest:0.01:mptest;
@@ -31,7 +31,7 @@ maRange =matest:0.01:matest;
 
 
 vdBasetest = 0;
-vdBaseRange = 3.5:0.05:5.0;
+vdBaseRange = 0.05:0.05:3;
 
 rsq1Best = 0;
 rsq2Best = 0;
@@ -57,7 +57,7 @@ for irodY = rodYRange
                     for ima = maRange
                         for ivdb = vdBaseRange
                             t= toc;
-                            rsqs(1) = CLA_McClung_WL_Lumileds_rod_MPOD_func_Test2(irodY,iOFY,iOFB,irodB,imp,ima,ivdb,fileStruct);
+                            rsqs(1) = CLA_McClung_WL_Lumileds_rod_MPOD_func_Test3(irodY,iOFY,iOFB,irodB,imp,ima,ivdb,fileStruct);
                             %rsq = CLA_McClung_WL_Lumileds_warm_4K_rod_MPOD_func(irodY,iOFY,iOFB,irodB,imp,ima,fileStruct);
                             %rsq = CLA_McClung_WL_Lumileds_Cool_rod_MPOD_func(irodY,iOFY,iOFB,irodB,imp,ima,fileStruct); % no ofb yet
                             

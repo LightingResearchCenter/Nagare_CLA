@@ -22,6 +22,7 @@ Vprime = Vprime/max(Vprime);
 
 Scone = fileStruct.Scone;
 Scone = interp1(Scone(:,1),Scone(:,2),wavelength_spd,'linear',0.0);
+Sc2 = Scone;
 
 Macula = fileStruct.MacularPigmentODfromSnodderly;
 thickness = 1.0; % macular thickness factor
@@ -63,7 +64,7 @@ wave = BF_eff_func(:,1);
 BF_Vlambda = interp1(wave,BF_eff_func(:,3),wavelength_spd,'linear',0.0);
  g = 3; 
 %g = scone_over_mel; 
-BrightnessFunction = BF_Vlambda + g*Scone;
+BrightnessFunction = BF_Vlambda + g*Sc2 + Vprime;
 brightness = BrightnessFunction/max(BrightnessFunction); %  normalize to max=1 (luminous efficiency)
 
 brightness_response = trapz(wavelength_spd,brightness.*spd);
