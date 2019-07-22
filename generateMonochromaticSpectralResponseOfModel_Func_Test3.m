@@ -1,4 +1,4 @@
-function [maxrsq ]  = generateMonochromaticSpectralResponseOfModel_Func2(rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct)
+function [maxrsq ]  = generateMonochromaticSpectralResponseOfModel_Func_Test3(rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct)
 
 %Brainard and Thappan Data
 % [wavelength  response]
@@ -35,13 +35,12 @@ for j = 1:length(wave)
     P = spd.*irrad; % scaled spd
     
     % CLA is "Circadian Light" as given by the phototranduction model
-    CLA(j,:) = CLA_rod_both_MPOD_calculation_Test2([wave P], rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
+    CLA = CLA_rod_both_MPOD_calculation_Test3([wave P], rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
     
     
-     % find the irradiance that gives the criterion response
+    criterionIrrad(j) = interp1(CLA,irrad,criterion,'linear'); % find the irradiance that gives the criterion response
     %     display(['Wavelength = ' num2str(wave(j),'%d') ' nm; Stimulus for criterion response = ' num2str(criterionIrrad(j)) ' W/m^2']);
 end
-criterionIrrad = interp2(irrad,wave,CLA,criterion*ones(length(wave),1),wave);
 % for j = 1:length(wave)
 %     display(['Wavelength = ' num2str(wave(j),'%d') ' nm; Stimulus for criterion response = ' num2str(criterionIrrad(j)) ' W/m^2']);
 % end

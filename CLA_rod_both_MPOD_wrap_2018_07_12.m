@@ -5,21 +5,21 @@ fileStruct = loadAllTextFiles2();
 %% Initialize Loop Variables
 
 
-ofYtest = 3.2;%1.40;%
-%ofYRange =ofYtest-.5:0.5:ofYtest+.5;
-ofYRange = 2.5:0.1:3.5;   % ofY = 1 for original model ON WARM SIDE
+ofYtest = 1;%1.40;%
+ofYRange =ofYtest-.5:0.5:ofYtest+.5;
+%ofYRange = 0.1:0.1:2.5;   % ofY = 1 for original model ON WARM SIDE
 
 ofBtest = 0.95;%0.81;%
-ofBRange =ofBtest:0.5:ofBtest;
-% ofBRange = 0.75:0.05:1.25;   % ofB = 1 for original model ON COOL SIDE
+%ofBRange =ofBtest:0.5:ofBtest;
+ofBRange = 0.75:0.05:1.25;   % ofB = 1 for original model ON COOL SIDE
 
-rodYtest = 3.5;%1.1;%
-%rodYRange =rodYtest-.5:0.5:rodYtest+.5;
-rodYRange = 0.5:0.05:1.0;   % rodY = 0 for original model
+rodYtest = 0.05;%1.1;%
+rodYRange =rodYtest-.5:0.5:rodYtest+.5;
+%rodYRange = 0.05:0.05:1.0;   % rodY = 0 for original model
 
 rodBtest = 0.6;%1.28;%
-rodBRange =rodBtest:0.5:rodBtest;
-% rodBRange = 0.25:0.05:1;   % rodB = 0 for original model
+%rodBRange =rodBtest:0.5:rodBtest;
+rodBRange = 0.25:0.05:1;   % rodB = 0 for original model
 
 mptest = 0.2;       % MPOD
 mpRange =mptest:0.01:mptest;
@@ -62,9 +62,9 @@ for irodY = rodYRange
                             %rsq = CLA_McClung_WL_Lumileds_Cool_rod_MPOD_func(irodY,iOFY,iOFB,irodB,imp,ima,fileStruct); % no ofb yet
                             
                             %rsq2 = CLA_FIT_Brainard_Thapan_FEB_2019_rod_both_MPOD_func_Test(irodY,iOFY,iOFB,irodB,imp,ima,fileStruct);
-                            rsqs(2) = CLA_FIT_Brainard_Thapan_FEB_2019_rod_both_MPOD_func_Test2(irodY,iOFY,iOFB,irodB,imp,ima,ivdb,fileStruct);
+                            rsqs(2) = CLA_FIT_Brainard_Thapan_FEB_2019_rod_both_MPOD_func_Test3(irodY,iOFY,iOFB,irodB,imp,ima,ivdb,fileStruct);
                             %rsqs(3) = generateMonochromaticSpectralResponseOfModel_efficacy_Func(irodY, iOFY, iOFB, irodB, imp, ima,ivdb,fileStruct);
-                            rsqs(3) = generateMonochromaticSpectralResponseOfModel_Func(irodY, iOFY, iOFB, irodB, imp, ima,ivdb,fileStruct);
+                            rsqs(3) = generateMonochromaticSpectralResponseOfModel_Func_Test3(irodY, iOFY, iOFB, irodB, imp, ima,ivdb,fileStruct);
                             
                             rsqs(rsqs < 0) = 0;
                             
