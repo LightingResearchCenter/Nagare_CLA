@@ -8,8 +8,8 @@ GAI_test = GamutArea23Sep05_test([wavelength_spd, spd],fileStruct)' * 13600;
 vd = ivdb.^(1-(.01./(.01+GAI_test)));%exp(1.1-(1.1./(1+GAI_test)));%
 
 rodY = rodY * vd;
-%ofY = ofY * vd;
-%ofB = ofB * vd;
+ofY = ofY * vd;
+ofB = ofB * vd;
 rodB = rodB * vd;
 
 
@@ -67,7 +67,7 @@ BrightnessFunction = BF_Vlambda + g*Scone;
 brightness = BrightnessFunction/max(BrightnessFunction); %  normalize to max=1 (luminous efficiency)
 
 brightness_response = trapz(wavelength_spd,brightness.*spd);
-rod_over_brightness = rod_response./brightness_response;
+rod_over_brightness = sqrt(rod_response./brightness_response);
 c1 = 0.81;
 c2 = 0.3;
 rod_over_brightness_E = c1*exp(1-c2./rod_over_brightness);

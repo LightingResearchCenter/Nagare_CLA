@@ -7,7 +7,7 @@ fileStruct = loadAllTextFiles2();
 
 ofYtest = 1;%1.40;%
 %ofYRange =ofYtest:0.5:ofYtest;
-ofYRange = 2.3:0.1:4;   % ofY = 1 for original model ON WARM SIDE
+ofYRange = 1.4:0.1:2.5;   % ofY = 1 for original model ON WARM SIDE
 
 ofBtest = 0.95;%0.81;%
 ofBRange =ofBtest:0.5:ofBtest;
@@ -15,7 +15,7 @@ ofBRange =ofBtest:0.5:ofBtest;
 
 rodYtest = 0.05;%1.1;%
 %rodYRange =rodYtest:0.5:rodYtest;
-rodYRange = 1.25:0.05:2.5;   % rodY = 0 for original model
+rodYRange = 0.5:0.05:1.5;   % rodY = 0 for original model
 
 rodBtest = 0.6;%1.28;%
 rodBRange =rodBtest:0.5:rodBtest;
@@ -31,7 +31,7 @@ maRange =matest:0.01:matest;
 
 
 vdBasetest = 0;
-vdBaseRange = 2:0.05:3.5;
+vdBaseRange = 0.5:0.05:1.5;
 
 rsq1Best = 0;
 rsq2Best = 0;
@@ -74,8 +74,8 @@ for irodY = rodYRange
                                 maxrsq = rsq
                                 generateMonochromaticSpectralResponseOfModel_Func_Test3(irodY, iOFY, iOFB, irodB, imp, ima,ivdb,fileStruct,true);
                                 rsq1Best = rsqs(1);
-                                %rsq2Best = rsqs(2);
-                                %rsq3Best = rsqs(3);
+                                rsq2Best = rsqs(2);
+                                rsq3Best = rsqs(3);
                                 rodYBest = irodY;
                                 ofYBest = iOFY;
                                 ofBBest = iOFB;
