@@ -8,11 +8,11 @@ wavelength = Table(:,1);
 xbar = Table(:,2);
 ybar = Table(:,3);
 zbar = Table(:,4);
-xbar = interp1(wavelength,xbar,wavelength_spd);
+xbar = interp1q(wavelength,xbar,wavelength_spd);
 xbar(isnan(xbar)) = 0.0;
-ybar = interp1(wavelength,ybar,wavelength_spd);
+ybar = interp1q(wavelength,ybar,wavelength_spd);
 ybar(isnan(ybar)) = 0.0;
-zbar = interp1(wavelength,zbar,wavelength_spd);
+zbar = interp1q(wavelength,zbar,wavelength_spd);
 zbar(isnan(zbar)) = 0.0;
 
 %********************* CRI Test Color Samples Chromaticity Calc ****************
@@ -23,8 +23,8 @@ wavelength_5 = TCS(:,1);
 TCS = TCS(:,2:end); % Remove wavelength column
 TCS = TCS/1000;
 for i = 1:14
-	TCS_1(:,i) = interp1(wavelength_5,TCS(:,i),wavelength_spd,'linear',0);
-	%TCS_1(isnan(TCS_1(:,i)),i) = 0.0; % remove NaN from vector, but it
+	TCS_1(:,i) = interp1q(wavelength_5,TCS(:,i),wavelength_spd);
+	TCS_1(isnan(TCS_1(:,i)),i) = 0.0; % remove NaN from vector, but it
 	%should't have any since a zero value was specified for extrapolated
 	%values in above interp1 function.
 end

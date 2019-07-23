@@ -14,14 +14,17 @@ rodB = rodB * vd;
 
 
 Vlamda = fileStruct.Vlamda;
-Vlambda = interp1(Vlamda(:,1),Vlamda(:,2),wavelength_spd,'linear',0.0);
+Vlambda = interp1q(Vlamda(:,1),Vlamda(:,2),wavelength_spd);
+Vlambda(isnan(Vlambda)) = 0.0;
 
 Vprime = fileStruct.Vprime;
-Vprime = interp1(Vprime(:,1),Vprime(:,2),wavelength_spd,'linear',0.0);
+Vprime = interp1q(Vprime(:,1),Vprime(:,2),wavelength_spd);
+Vprime(isnan(Vprime)) = 0.0;
 Vprime = Vprime/max(Vprime);
 
 Scone = fileStruct.Scone;
-Scone = interp1(Scone(:,1),Scone(:,2),wavelength_spd,'linear',0.0);
+Scone = interp1q(Scone(:,1),Scone(:,2),wavelength_spd);
+Scone(isnan(Scone)) = 0.0;
 Sc2 = Scone;
 
 Macula = fileStruct.MacularPigmentODfromSnodderly;
