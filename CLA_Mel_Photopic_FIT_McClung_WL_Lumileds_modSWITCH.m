@@ -11,6 +11,7 @@ supp_A = ZA(:,1)';
 Melanopic_A = ZA(:,3)';
 lux_A = ZA(:,4)';    
 A = fileStruct.spd_McClung_2700K_1lux;
+A(:,2) = (A(:,2) .* lux_A)/Lxy23Sep05(A);
 
 ZB = fileStruct.McClung_1h_6500K;%
 supp_B = ZB(:,1)';
@@ -18,6 +19,7 @@ supp_B = ZB(:,1)';
 Melanopic_B = ZB(:,3)';
 lux_B = ZB(:,4)';
 B = fileStruct.spd_McClung_6500K_1lux;
+B(:,2) = (B(:,2) .* lux_B)/Lxy23Sep05(B);
 
 ZC = fileStruct.WL_1h_2700K_corr;%
 supp_C = ZC(:,1)';
@@ -25,6 +27,7 @@ supp_C = ZC(:,1)';
 Melanopic_C = ZC(:,3)';
 lux_C = ZC(:,4)';
 C = fileStruct.spd_WL_2700K_1lux;
+C(:,2) = (C(:,2) .* lux_C)/Lxy23Sep05(C);
 
 ZD = fileStruct.WL_1h_5600K_corr;%
 supp_D = ZD(:,1)';
@@ -32,6 +35,7 @@ supp_D = ZD(:,1)';
 Melanopic_D = ZD(:,3)';
 lux_D = ZD(:,4)';
 D = fileStruct.spd_WL_5600K_1lux;
+D(:,2) = (D(:,2) .* lux_D)/Lxy23Sep05(D);
 
 ZE = fileStruct.Lumileds_1h_3000K;%
 supp_E = ZE(:,1)';
@@ -39,6 +43,7 @@ supp_E = ZE(:,1)';
 Melanopic_E = ZE(:,3)';
 lux_E = ZE(:,4)';    
 E = fileStruct.spd_Lumileds_3000K_1lux;
+E(:,2) = (E(:,2) .* lux_E)/Lxy23Sep05(E);
 
 ZF = fileStruct.Lumileds_1h_CG;%
 supp_F = ZF(:,1)';
@@ -46,6 +51,7 @@ supp_F = ZF(:,1)';
 Melanopic_F = ZF(:,3)';
 lux_F = ZF(:,4)';    
 F = fileStruct.spd_Lumileds_CG_1lux;
+F(:,2) = (F(:,2) .* lux_F)/Lxy23Sep05(F);
 
 ZG = fileStruct.Lumileds_1h_4000K;%
 supp_G = ZG(:,1)';
@@ -53,16 +59,26 @@ supp_G = ZG(:,1)';
 Melanopic_G = ZG(:,3)';
 lux_G = ZG(:,4)';    
 G = fileStruct.spd_Lumileds_4000K_1lux;
+G(:,2) = (G(:,2) .* lux_G)/Lxy23Sep05(G);
 
       
-CLA_A = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(A, lux_A,fileStruct);
-CLA_B = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(B, lux_B,fileStruct);
-CLA_C = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(C, lux_C,fileStruct);
-CLA_D = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(D, lux_D,fileStruct);
-CLA_E = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(E, lux_E,fileStruct);
-CLA_F = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(F, lux_F,fileStruct);
-CLA_G = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(G, lux_G,fileStruct);
+% CLA_A = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(A, lux_A,fileStruct);
+% CLA_B = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(B, lux_B,fileStruct);
+% CLA_C = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(C, lux_C,fileStruct);
+% CLA_D = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(D, lux_D,fileStruct);
+% CLA_E = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(E, lux_E,fileStruct);
+% CLA_F = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(F, lux_F,fileStruct);
+% CLA_G = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(G, lux_G,fileStruct);
 
+
+
+CLA_A = CLA_rod_both_MPOD_calculation_Test3(A, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
+CLA_B = CLA_rod_both_MPOD_calculation_Test3(A, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
+CLA_C = CLA_rod_both_MPOD_calculation_Test3(A, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
+CLA_D = CLA_rod_both_MPOD_calculation_Test3(A, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
+CLA_E = CLA_rod_both_MPOD_calculation_Test3(A, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
+CLA_F = CLA_rod_both_MPOD_calculation_Test3(A, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
+CLA_G = CLA_rod_both_MPOD_calculation_Test3(A, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
 
 % %**********
 % Compute logistic
