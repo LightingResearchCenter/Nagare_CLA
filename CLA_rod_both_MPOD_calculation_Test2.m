@@ -5,7 +5,7 @@ wavelength_spd = spd(:,1);
 spd = spd(:,2:end);
 
 GAI_test = GamutArea23Sep05_test([wavelength_spd, spd],fileStruct)' * 13600;
-vd = ivdb.^(1-(.01./(.01+GAI_test)));%exp(1.1-(1.1./(1+GAI_test)));%
+vd = ivdb.^( - (.01./(.01+GAI_test)));%exp(1.1-(1.1./(1+GAI_test)));%
 
 rodY = rodY * vd;
 ofY = ofY * vd;
@@ -55,19 +55,19 @@ vl_response = trapz(wavelength_spd,Vlambda.*spd);
 scone_response = trapz(wavelength_spd,Scone.*spd);
 rod_response = trapz(wavelength_spd,Vprime.*spd);
 mel_response = trapz(wavelength_spd,M.*spd);
-scone_over_mel = scone_response/mel_response;
+scone_over_mel = scone_response./mel_response;
 
 
 BF_eff_func = fileStruct.CIE31by1;
 wave = BF_eff_func(:,1);
 BF_Vlambda = interp1(wave,BF_eff_func(:,3),wavelength_spd,'linear',0.0);
- g = 3; 
+g = 1; 
 %g = scone_over_mel; 
-BrightnessFunction = BF_Vlambda + g*Scone;
+BrightnessFunction = BF_Vlambda + g.*Scone;
 brightness = BrightnessFunction/max(BrightnessFunction); %  normalize to max=1 (luminous efficiency)
 
 brightness_response = trapz(wavelength_spd,brightness.*spd);
-rod_over_brightness = sqrt(rod_response./brightness_response);
+rod_over_brightness = (rod_response./brightness_response).^(0.7);
 c1 = 0.81;
 c2 = 0.3;
 rod_over_brightness_E = c1*exp(1-c2./rod_over_brightness);

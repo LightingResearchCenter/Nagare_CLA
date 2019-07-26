@@ -65,13 +65,13 @@ scone_over_mel = scone_response/mel_response;
 BF_eff_func = fileStruct.CIE31by1;
 wave = BF_eff_func(:,1);
 BF_Vlambda = interp1(wave,BF_eff_func(:,3),wavelength_spd,'linear',0.0);
- g = 3; 
+ g = 1; 
 %g = scone_over_mel; 
-BrightnessFunction = BF_Vlambda + g*Sc2 + Vprime;
+BrightnessFunction = BF_Vlambda + g*Scone;
 brightness = BrightnessFunction/max(BrightnessFunction); %  normalize to max=1 (luminous efficiency)
 
 brightness_response = trapz(wavelength_spd,brightness.*spd);
-rod_over_brightness = rod_response./brightness_response;
+rod_over_brightness = (rod_response./brightness_response).^(0.7);
 c1 = 0.81;
 c2 = 0.3;
 rod_over_brightness_E = c1*exp(1-c2./rod_over_brightness);

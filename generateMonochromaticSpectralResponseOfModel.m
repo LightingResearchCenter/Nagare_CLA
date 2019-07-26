@@ -24,13 +24,13 @@ wave = (420:5:600)'; % Wavelength range for calculations
 
 criterion = 300; % Criterion response in units of CLA ("Circadian Light"). CLA is numerically equal to lux for CIE Illuminant A
 
-rodY = -.8;
-ofY = 0.7;
-ofB = .95;
-rodB = 0.6;
-mp = 0.2;
-ma = 0.35;
-ivdb = .05;
+rodY=1.2;
+ofY=1.5;
+ofB=0.9500;
+rodB=0.6000;
+mp=0.2;
+ma=0.35;
+ivdb=0.85;
 
 criterionIrrad = zeros(size(wave)); % initialize array
 for j = 1:length(wave)
@@ -44,7 +44,7 @@ for j = 1:length(wave)
         P = spd*irrad(i); % scaled spd
  
         % CLA is "Circadian Light" as given by the phototranduction model
-        CLA(i) = CLA_rod_both_MPOD_calculation_Test3([wave P], rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
+        CLA(i) = CLA_rod_both_MPOD_calculation_Test2([wave P], rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
         
     end
     criterionIrrad(j) = interp1(CLA,irrad,criterion,'linear'); % find the irradiance that gives the criterion response

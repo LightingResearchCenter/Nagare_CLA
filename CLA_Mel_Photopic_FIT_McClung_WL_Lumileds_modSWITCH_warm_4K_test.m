@@ -40,12 +40,12 @@ supp_G = fileStruct.white_light_data.Supp(logical(fileStruct.white_light_data.G)
 % G = fileStruct.spd_Lumileds_4000K_1lux;
 
 rodY=1.2;
-ofY=2.0;
+ofY=1.5;
 ofB=0.9500;
 rodB=0.6000;
 mp=0.2;
 ma=0.35;
-ivdb=0.6;
+ivdb=.85;
 
 CLA_A = CLA_rod_both_MPOD_calculation_Test2(ZA, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
 CLA_C = CLA_rod_both_MPOD_calculation_Test2(ZC, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);

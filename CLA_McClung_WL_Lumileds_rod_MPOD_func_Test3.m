@@ -9,7 +9,7 @@ function [maxrsq] = CLA_McClung_WL_Lumileds_rod_MPOD_func_Test3(rodY, ofY, ofB, 
     
     %% Combine SPDs 
 
-    CLA = CLA_rod_both_MPOD_calculation_Test2(white_light_data, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
+    CLA = CLA_rod_both_MPOD_calculation_Test3(white_light_data, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
 
     CLA = CLA';
     supp = fileStruct.white_light_data.Supp(fileStruct.white_light_data.warm);
