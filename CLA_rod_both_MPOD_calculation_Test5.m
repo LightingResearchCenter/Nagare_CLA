@@ -1,4 +1,4 @@
-function CLA = CLA_rod_both_MPOD_calculation_Test2(spd, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,varargin)
+function CLA = CLA_rod_both_MPOD_calculation_Test5(spd, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,varargin)
 
 if numel(varargin) == 0 
     testA2 = 0.7;
@@ -17,8 +17,14 @@ end
 wavelength_spd = spd(:,1);
 spd = spd(:,2:end);
 
-GAI_test = GamutArea23Sep05_test([wavelength_spd, spd],fileStruct)' * 13600;
-vd = ivdb.^(1 - (.01./(.01+GAI_test)));%exp(1.1-(1.1./(1+GAI_test)));%
+% GAI_test = GamutArea23Sep05_test([wavelength_spd, spd],fileStruct)' * 13600;
+[DC] = abs(calcDuv2([wavelength_spd, spd],fileStruct));
+% vd = ivdb.^(1-(0.01./(0.01-(abs(DC.*100)))));%exp(1.1-(1.1./(1+GAI_test)));%
+% vd = .6 + ((ivdb - 0.6)./(1 + (DC./0.06).^2.5));
+% vd = 0.715843 + (ivdb - 0.715843)/(1 + (DC/0.04415223)^2.891163);
+vd = 0.73 + (ivdb - 0.73)./(1 + (DC./0.05).^6.2); %3000kMinTint
+% vd = 0.72 + (ivdb - 0.72)./(1 + (DC./0.05).^3.7); %2700 MinTint
+% vd = 0.72 + (ivdb - 0.72)./(1 + (DC./0.05).^12.0); %3500 MinTint
 
 rodY = rodY * vd;
 ofY = ofY * vd;

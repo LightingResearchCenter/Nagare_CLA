@@ -3,7 +3,7 @@ clear
 close('all')
 fileStruct = loadAllTextFiles();
 
-typeoffit = 'best'; % best or original
+typeoffit = 'original'; % best or original
 
 ZB = fileStruct.McClung_1h_6500K;%
 supp_B = ZB(:,1)';

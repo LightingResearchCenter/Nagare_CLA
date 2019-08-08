@@ -1,6 +1,6 @@
 %
 clear
-close('all')
+% close('all')
 fileStruct = loadAllTextFiles2();
 typeoffit = 'original'; % best or original
 
@@ -39,13 +39,13 @@ supp_G = fileStruct.white_light_data.Supp(logical(fileStruct.white_light_data.G)
 % lux_G = ZG(:,4)';    
 % G = fileStruct.spd_Lumileds_4000K_1lux;
 
-rodY=1.2;
-ofY=1.5;
-ofB=0.9500;
-rodB=0.6000;
-mp=0.2;
-ma=0.35;
-ivdb=.85;
+rodY = 7.5;
+ofY = 5.0;
+ofB = 5;
+rodB = 7.5;
+mp = 0.2;
+ma = 0.35;
+ivdb = 4.3;
 
 CLA_A = CLA_rod_both_MPOD_calculation_Test2(ZA, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
 CLA_C = CLA_rod_both_MPOD_calculation_Test2(ZC, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
@@ -89,7 +89,7 @@ end
         j = 1;
 
         %B is the term in the denominator/half-saturation value (was 215.75)
-        for B = Brange  % B = 200:1:600 ---- B = Brange -----
+        for B = 100:1:600  % B = 200:1:600 ---- B = Brange -----
             k = 1;
 
             %C is the exponent (was .864)
@@ -139,7 +139,7 @@ end
     x = xLim(1):0.01:xLim(2); %-2:.01:5;
     %x = 10.^x;
     fit = minA*(1 - (1./(1 + (10.^x/minB).^minC)));
-    plot(x, fit, 'k', 'linewidth', 2)
+    plot(x, fit, 'k--', 'linewidth', 2)
     ylim([-0.1 0.8])
     HL1 = legend('2700K (M)', '2700K (WL)', '3000K (L)', 'Cyan-gap (L)', '4000K (L)','location', 'northwest');%, , 'curve fit')
     xlabel(xLabel,'FontSize',14)
@@ -148,7 +148,7 @@ end
 
 %     title({'Original fit'; titleStr},'FontSize',14)% *********************************
 %     title({'Eratio c2 1: ofY 4.4,rodY 3.4, a3 0, 0.2@35'; titleStr},'FontSize',13)% *********************************
-    title({'Parameters: ofY 3.2,rodY 3.5'; titleStr},'FontSize',13)% *********************************
+    title({sprintf('Parameters: ofY %0.2f,rodY %0.2f',ofY,rodY); titleStr},'FontSize',13)% *********************************
 %     title({'Parameters: ofY 1.4,rodY 1.1'; titleStr},'FontSize',13)% *********************************
 
     temp = find(fit > .11);

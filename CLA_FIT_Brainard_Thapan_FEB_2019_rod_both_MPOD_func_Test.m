@@ -1,4 +1,16 @@
-function [maxrsq] = CLA_FIT_Brainard_Thapan_FEB_2019_rod_both_MPOD_func_Test(rodY,ofY,ofB,rodB,mp,ma,fileStruct)
+function [maxrsq] = CLA_FIT_Brainard_Thapan_FEB_2019_rod_both_MPOD_func_Test(rodY,ofY,ofB,rodB,mp,ma,fileStruct,varargin)
+if numel(varargin) == 0 
+    testA2 = 0.7;
+    testA3 = 0;
+elseif numel(varargin) == 1 
+    testA2 = 0.7;
+    testA3 = varargin{1};
+elseif numel(varargin) == 2
+    testA2 = varargin{1};
+    testA3 = varargin{2};
+else
+    error('Too many inputs')
+end 
 
 wave = (380:1:780)';
 % Melanopic weighting function
@@ -35,7 +47,7 @@ for i1 = 1:length(wavelengths)
     supp_A(i1) = supp(i1);
      lux_A(i1) = Lxy23Sep05([A(:,1) A(:,2)]);
     irrad_A(i1) = trapz(A(:,1), A(:,2));
-    CLA_A(i1) = CLA_rod_both_MPOD_calculation_Test([A(:,1) A(:,2)], lux_A(i1), rodY, ofY, ofB, rodB, mp, ma,fileStruct);
+    CLA_A(i1) = CLA_rod_both_MPOD_calculation_Test([A(:,1) A(:,2)], lux_A(i1), rodY, ofY, ofB, rodB, mp, ma,fileStruct,testA2,testA3);
     Melanopic_A(i1) = 843*trapz(A(:,1), MelanopicInterp.*A(:,2));
     %CLA(i) = spdtolux([A(:,1) A(:,2)]);
     %temp(i) = trapz(A(:,1), A(:,2));
@@ -65,7 +77,7 @@ for i1 = 1:length(wavelengths)
     supp_B(i1) = supp(i1);
     lux_B(i1) = Lxy23Sep05([A(:,1) A(:,2)]);
     irrad_B(i1) = trapz(A(:,1), A(:,2));
-    CLA_B(i1) = CLA_rod_both_MPOD_calculation_Test([A(:,1) A(:,2)], lux_B(i1),rodY, ofY, ofB, rodB, mp, ma, fileStruct);
+    CLA_B(i1) = CLA_rod_both_MPOD_calculation_Test([A(:,1) A(:,2)], lux_B(i1),rodY, ofY, ofB, rodB, mp, ma, fileStruct,testA2,testA3);
     Melanopic_B(i1) = 843*trapz(A(:,1), MelanopicInterp.*A(:,2));
 end
 

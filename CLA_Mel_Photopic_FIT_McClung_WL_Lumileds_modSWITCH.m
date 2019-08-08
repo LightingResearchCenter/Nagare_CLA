@@ -1,67 +1,76 @@
 %
 clear
 close('all')
-fileStruct = loadAllTextFiles();
-
+% fileStruct = loadAllTextFiles();
+fileStruct = loadAllTextFiles2();
 typeoffit = 'original'; % best or original
 
-ZA = fileStruct.McClung_1h_2700K;%
-supp_A = ZA(:,1)';
+ZA = [fileStruct.white_light_data.Wavelengths,fileStruct.white_light_data.SPD(:,logical(fileStruct.white_light_data.A))];%
+supp_A = fileStruct.white_light_data.Supp(logical(fileStruct.white_light_data.A));
 % CLA_A_test = ZA(:,2)';
-Melanopic_A = ZA(:,3)';
-lux_A = ZA(:,4)';    
-A = fileStruct.spd_McClung_2700K_1lux;
-A(:,2) = (A(:,2) .* lux_A)/Lxy23Sep05(A);
+% Melanopic_A = ZA(:,3)';
+% lux_A = ZA(:,4)';    
+% A = fileStruct.spd_McClung_2700K_1lux;
 
-ZB = fileStruct.McClung_1h_6500K;%
-supp_B = ZB(:,1)';
-% CLA_B_test = ZB(:,2)';
-Melanopic_B = ZB(:,3)';
-lux_B = ZB(:,4)';
-B = fileStruct.spd_McClung_6500K_1lux;
-B(:,2) = (B(:,2) .* lux_B)/Lxy23Sep05(B);
+ZB = [fileStruct.white_light_data.Wavelengths,fileStruct.white_light_data.SPD(:,logical(fileStruct.white_light_data.B))];%
+supp_B = fileStruct.white_light_data.Supp(logical(fileStruct.white_light_data.B));
 
-ZC = fileStruct.WL_1h_2700K_corr;%
-supp_C = ZC(:,1)';
+% ZB = fileStruct.McClung_1h_6500K;%
+% supp_B = ZB(:,1)';
+% % CLA_B_test = ZB(:,2)';
+% Melanopic_B = ZB(:,3)';
+% lux_B = ZB(:,4)';
+% B = fileStruct.spd_McClung_6500K_1lux;
+
+ZC = [fileStruct.white_light_data.Wavelengths,fileStruct.white_light_data.SPD(:,logical(fileStruct.white_light_data.C))];%
+supp_C = fileStruct.white_light_data.Supp(logical(fileStruct.white_light_data.C));
 % CLA_C_test = ZC(:,2)';
-Melanopic_C = ZC(:,3)';
-lux_C = ZC(:,4)';
-C = fileStruct.spd_WL_2700K_1lux;
-C(:,2) = (C(:,2) .* lux_C)/Lxy23Sep05(C);
+% Melanopic_C = ZC(:,3)';
+% lux_C = ZC(:,4)';
+% C = fileStruct.spd_WL_2700K_1lux;
 
-ZD = fileStruct.WL_1h_5600K_corr;%
-supp_D = ZD(:,1)';
-% CLA_D_test = ZD(:,2)';
-Melanopic_D = ZD(:,3)';
-lux_D = ZD(:,4)';
-D = fileStruct.spd_WL_5600K_1lux;
-D(:,2) = (D(:,2) .* lux_D)/Lxy23Sep05(D);
 
-ZE = fileStruct.Lumileds_1h_3000K;%
-supp_E = ZE(:,1)';
+ZD = [fileStruct.white_light_data.Wavelengths,fileStruct.white_light_data.SPD(:,logical(fileStruct.white_light_data.D))];%
+supp_D = fileStruct.white_light_data.Supp(logical(fileStruct.white_light_data.D));
+
+% ZD = fileStruct.WL_1h_5600K_corr;%
+% supp_D = ZD(:,1)';
+% % CLA_D_test = ZD(:,2)';
+% Melanopic_D = ZD(:,3)';
+% lux_D = ZD(:,4)';
+% D = fileStruct.spd_WL_5600K_1lux;
+
+ZE = [fileStruct.white_light_data.Wavelengths,fileStruct.white_light_data.SPD(:,logical(fileStruct.white_light_data.E))];%
+supp_E = fileStruct.white_light_data.Supp(logical(fileStruct.white_light_data.E));
 % CLA_E_test = ZE(:,2)';
-Melanopic_E = ZE(:,3)';
-lux_E = ZE(:,4)';    
-E = fileStruct.spd_Lumileds_3000K_1lux;
-E(:,2) = (E(:,2) .* lux_E)/Lxy23Sep05(E);
+% Melanopic_E = ZE(:,3)';
+% lux_E = ZE(:,4)';    
+% E = fileStruct.spd_Lumileds_3000K_1lux;
 
-ZF = fileStruct.Lumileds_1h_CG;%
-supp_F = ZF(:,1)';
+ZF = [fileStruct.white_light_data.Wavelengths,fileStruct.white_light_data.SPD(:,logical(fileStruct.white_light_data.F))];%
+supp_F = fileStruct.white_light_data.Supp(logical(fileStruct.white_light_data.F));
 % CLA_F_test = ZF(:,2)';
-Melanopic_F = ZF(:,3)';
-lux_F = ZF(:,4)';    
-F = fileStruct.spd_Lumileds_CG_1lux;
-F(:,2) = (F(:,2) .* lux_F)/Lxy23Sep05(F);
+% Melanopic_F = ZF(:,3)';
+% lux_F = ZF(:,4)';    
+% F = fileStruct.spd_Lumileds_CG_1lux;
 
-ZG = fileStruct.Lumileds_1h_4000K;%
-supp_G = ZG(:,1)';
+ZG = [fileStruct.white_light_data.Wavelengths,fileStruct.white_light_data.SPD(:,logical(fileStruct.white_light_data.G))];%
+supp_G = fileStruct.white_light_data.Supp(logical(fileStruct.white_light_data.G));
 % CLA_G_test = ZG(:,2)';
-Melanopic_G = ZG(:,3)';
-lux_G = ZG(:,4)';    
-G = fileStruct.spd_Lumileds_4000K_1lux;
-G(:,2) = (G(:,2) .* lux_G)/Lxy23Sep05(G);
+% Melanopic_G = ZG(:,3)';
+% lux_G = ZG(:,4)';    
+% G = fileStruct.spd_Lumileds_4000K_1lux;
 
-      
+rodY = 1.8;
+ofY = 1.3;
+ofB = 1.3;
+rodB = 1.8;
+mp = 0.3;
+ma = 0.2;
+ivdb = 4.3;
+a2 = .45;
+a3 = 2.5;
+
 % CLA_A = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(A, lux_A,fileStruct);
 % CLA_B = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(B, lux_B,fileStruct);
 % CLA_C = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(C, lux_C,fileStruct);
@@ -72,20 +81,20 @@ G(:,2) = (G(:,2) .* lux_G)/Lxy23Sep05(G);
 
 
 
-CLA_A = CLA_rod_both_MPOD_calculation_Test3(A, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
-CLA_B = CLA_rod_both_MPOD_calculation_Test3(A, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
-CLA_C = CLA_rod_both_MPOD_calculation_Test3(A, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
-CLA_D = CLA_rod_both_MPOD_calculation_Test3(A, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
-CLA_E = CLA_rod_both_MPOD_calculation_Test3(A, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
-CLA_F = CLA_rod_both_MPOD_calculation_Test3(A, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
-CLA_G = CLA_rod_both_MPOD_calculation_Test3(A, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct);
+CLA_A = CLA_rod_both_MPOD_calculation_Test5(ZA, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,a2,a3);
+CLA_B = CLA_rod_both_MPOD_calculation_Test5(ZB, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,a2,a3);
+CLA_C = CLA_rod_both_MPOD_calculation_Test5(ZC, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,a2,a3);
+CLA_D = CLA_rod_both_MPOD_calculation_Test5(ZD, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,a2,a3);
+CLA_E = CLA_rod_both_MPOD_calculation_Test5(ZE, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,a2,a3);
+CLA_F = CLA_rod_both_MPOD_calculation_Test5(ZF, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,a2,a3);
+CLA_G = CLA_rod_both_MPOD_calculation_Test5(ZG, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,a2,a3);
 
 % %**********
 % Compute logistic
 %************
 
 CLA = vertcat(CLA_A',CLA_B',CLA_C',CLA_D',CLA_E',CLA_F',CLA_G');
-supp = vertcat(supp_A',supp_B',supp_C',supp_D',supp_E',supp_F',supp_G');
+supp = vertcat(supp_A,supp_B,supp_C,supp_D,supp_E,supp_F,supp_G);
 Brange = 200:1:600;
 
 
@@ -115,7 +124,7 @@ end
         j = 1;
 
         %B is the term in the denominator/half-saturation value (was 215.75)
-        for B = Brange  % B = 200:1:600 ---- B = Brange -----
+        for B = 355.7  % B = 200:1:600 ---- B = Brange -----
             k = 1;
 
             %C is the exponent (was .864)
@@ -179,19 +188,20 @@ end
 %     title({'Original fit'; titleStr},'FontSize',14)% *********************************
 %     title({'Eratio c2 1: ofB 0.75,rodB 0.75, ofY 4.4,rodY 3.4, a3 0, 0.2@35'; titleStr},'FontSize',13)% *********************************
 %     title({'Parameters: ofB 0.7,rodB 0.65, ofY 3.2,rodY 3.5'; titleStr},'FontSize',13)% *********************************
-    title({'Parameters: ofB 0.8,rodB 1.3, ofY 1.4,rodY 1.1'; titleStr},'FontSize',13)% *********************************
+    title({sprintf('Parameters: of %0.2f,rod %0.2f, mp %0.2f, ma %0.2f',ofB,rodB,mp,ma); titleStr},'FontSize',13)% *********************************
 
     temp = find(fit > .11);
     % rsquare = num2str(maxrsq);
     % rsquare = round(rsquare,2);
-    text(xLim(1)+4, .22, ['r^2: ', num2str(round(maxrsq,4))],'FontSize',24);
+    text(xLim(1)+4, .32, ['Polychromatic'],'FontSize',18);
+    text(xLim(1)+4, .22, ['r^2: ', num2str(round(maxrsq,2))],'FontSize',18);
     text(xLim(1)+4, .12, ['Threshold: ', num2str(round(10^x(temp(1)),1))],'FontSize',16);
     % text(xLim(1)+0.25, .35, ['max. resp. (a): ', num2str(round(minA,2))],'FontSize',16);
     text(xLim(1)+4, .06, ['half-sat (b): ', num2str(round(minB,1))],'FontSize',16);
     text(xLim(1)+4, .0, ['rate (c): ', num2str(round(minC,4))],'FontSize',16)
     % text(xLim(1)+0.5, .15, ['max. response: ', num2str(minA)],'FontSize',12)
     set(gca,'XLim',xLim);
-    set(gca,'FontSize',16);
+    set(gca,'FontSize',14);
     set(HL1,'FontSize',16);     % does not matter as all set by gca
     %         max_rsq = maxrsq
     hold off

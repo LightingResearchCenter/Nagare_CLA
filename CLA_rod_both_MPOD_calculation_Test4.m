@@ -1,4 +1,4 @@
-function CLA = CLA_rod_both_MPOD_calculation_Test3(spd, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct)
+function CLA = CLA_rod_both_MPOD_calculation_Test4(spd, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct)
 
 % RN July 2019
 wavelength_spd = spd(:,1);
@@ -7,10 +7,10 @@ spd = spd(:,2:end);
 GAI_test = GamutArea23Sep05_test([wavelength_spd, spd],fileStruct)' * 13600;
 vd = ivdb.^(1-(.01./(.01+GAI_test)));%exp(1.1-(1.1./(1+GAI_test)));%
 
-rodY = rodY * vd;
-ofY = ofY * vd;
-ofB = ofB * vd;
-rodB = rodB * vd;
+% rodY = rodY * vd;
+% ofY = ofY * vd;
+% ofB = ofB * vd;
+% rodB = rodB * vd;
 
 
 Vlamda = fileStruct.Vlamda;
@@ -86,7 +86,7 @@ rodSat = rodSat/(diam^2/4*pi)*pi/1700;
 
 a1 = 1.0;      % 1.0 originally        %0.285 % Melanopsin correction factor
 b1 = 0.0;                             %0.01  
-a2 = 0.7000;  % a_(b-y)  was 0.6201 prior to 06Feb2014     %0.2
+a2 = 0.7;  % a_(b-y)  was 0.6201 prior to 06Feb2014     %0.2
 b2 = 0.0;                    %0.001
 k =  0.2616;                  %0.31 -- 0.2616 original / 0.2883 for 4K switch / 0.2436 for CG switch                           %0.001
 a3 = 0*3.300;  % a_rod  was 3.3 originally - made 0 now as a new rod threshold term added 
@@ -109,7 +109,7 @@ CS(CS < 0) = 0; % Negative values mean stimulus is below threshold set by consta
 CS2 = ofB.*(a2*(trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,Vlambda.*spd))-b2);
 CS2(CS2 < 0) = 0; % This is the important diode operator, the (b-y) term cannot be less than zero
 
-RodB = rodB.*(rod_over_brightness).*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat));
+RodB = rodB.*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat));
 
 %% Apply B-Y response
 CS(byIdx) = CS(byIdx) + CS2(byIdx) - RodB(byIdx);

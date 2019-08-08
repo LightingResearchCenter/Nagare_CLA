@@ -3,7 +3,7 @@ clear
 % close('all')
 fileStruct = loadAllTextFiles2();
 
-typeoffit = 'best'; % best or original
+typeoffit = 'original'; % best or original
 ZB = [fileStruct.white_light_data.Wavelengths,fileStruct.white_light_data.SPD(:,logical(fileStruct.white_light_data.B))];%
 supp_B = fileStruct.white_light_data.Supp(logical(fileStruct.white_light_data.B));
 
@@ -23,16 +23,18 @@ supp_D = fileStruct.white_light_data.Supp(logical(fileStruct.white_light_data.D)
 % Melanopic_D = ZD(:,3)';
 % lux_D = ZD(:,4)';
 % D = fileStruct.spd_WL_5600K_1lux;
-rodY = 1.55;
-ofY = 1.5;
-ofB = 0.71;
-rodB = 1.48;
+rodY = 0;
+ofY = 1;
+ofB = 5;
+rodB = 7.5;
 mp = 0.2;
 ma = 0.35;
-ivbd = 4.85;
+ivdb = 4.3;
+a2 = 0.2;
+a3 = 0.6;
 
-CLA_B = CLA_rod_both_MPOD_calculation_Test3(ZB, rodY, ofY, ofB, rodB, mp, ma,ivbd,fileStruct);
-CLA_D = CLA_rod_both_MPOD_calculation_Test3(ZD, rodY, ofY, ofB, rodB, mp, ma,ivbd,fileStruct);
+CLA_B = CLA_rod_both_MPOD_calculation_Test2(ZB, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,a2,a3);
+CLA_D = CLA_rod_both_MPOD_calculation_Test2(ZD, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,a2,a3);
 
 % CLA_B = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(B, lux_B);
 % CLA_D = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(D, lux_D);
@@ -73,7 +75,7 @@ end
         j = 1;
 
         %B is the term in the denominator/half-saturation value (was 215.75)
-        for B = Brange  % B = 200:1:600 ---- B = Brange -----
+        for B = 100:1:600  % B = 200:1:600 ---- B = Brange -----
             k = 1;
 
             %C is the exponent (was .864)
@@ -117,7 +119,7 @@ end
     x = xLim(1):0.01:xLim(2); %-2:.01:5;
     %x = 10.^x;
     fit = minA*(1 - (1./(1 + (10.^x/minB).^minC)));
-    plot(x, fit, 'k', 'linewidth', 2)
+    plot(x, fit, 'k--', 'linewidth', 2)
     ylim([-0.1 0.8])
     HL1 = legend('6500K (M)', '5600K (WL)','location', 'northwest');%, , 'curve fit')
     xlabel(xLabel,'FontSize',14)
@@ -126,13 +128,13 @@ end
 
 %     title({'Original fit'; titleStr},'FontSize',14)% *********************************
 %     title({'Eratio c2 1: ofB 0.75,rodB 0.75, a3 0, 0.2@35'; titleStr},'FontSize',13)% *********************************
-    title({sprintf('Parameters: ofB %0.2f,rodB %0.2f',ofB,rodB); titleStr},'FontSize',13)% *********************************
+    title({sprintf('Parameters: ofB %0.2f,rodB %0.2f, a2 %0.2f, a3 %0.2f',ofB,rodB,a2,a3); titleStr},'FontSize',13)% *********************************
 %     title({'Parameters: ofB 0.8,rodB 1.3'; titleStr},'FontSize',13)% *********************************
 
     temp = find(fit > .11);
     % rsquare = num2str(maxrsq);
     % rsquare = round(rsquare,2);
-    text(xLim(1)+4, .22, ['r^2: ', num2str(round(maxrsq,4))],'FontSize',24);
+    text(xLim(1)+4, .22, ['r^2: ', num2str(round(maxrsq,2))],'FontSize',24);
     text(xLim(1)+4, .12, ['Threshold: ', num2str(round(10^x(temp(1)),1))],'FontSize',16);
     % text(xLim(1)+0.25, .35, ['max. resp. (a): ', num2str(round(minA,2))],'FontSize',16);
     text(xLim(1)+4, .06, ['half-sat (b): ', num2str(round(minB,1))],'FontSize',16);
