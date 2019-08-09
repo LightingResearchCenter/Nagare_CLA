@@ -16,16 +16,16 @@ end
     %% Load Suppressions
     
     %% Load SPDs
-%     white_light_data = [fileStruct.white_light_data.Wavelengths,fileStruct.white_light_data.SPD(:,~fileStruct.white_light_data.warm)];
-    white_light_data = [fileStruct.white_light_data.Wavelengths,fileStruct.white_light_data.SPD];
+    white_light_data = [fileStruct.white_light_data.Wavelengths,fileStruct.white_light_data.SPD(:,~fileStruct.white_light_data.warm)];
+%     white_light_data = [fileStruct.white_light_data.Wavelengths,fileStruct.white_light_data.SPD];
     
     %% Combine SPDs 
 
-    CLA = CLA_rod_both_MPOD_calculation_Test5(white_light_data, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,testA2,testA3);
+    CLA = CLA_rod_both_MPOD_calculation_Test2(white_light_data, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,testA2,testA3);
 
     CLA = CLA';
-%     supp = fileStruct.white_light_data.Supp(~fileStruct.white_light_data.warm);
-    supp = fileStruct.white_light_data.Supp;
+    supp = fileStruct.white_light_data.Supp(~fileStruct.white_light_data.warm);
+%     supp = fileStruct.white_light_data.Supp;
 
 
 

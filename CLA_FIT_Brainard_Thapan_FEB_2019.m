@@ -25,14 +25,14 @@ supp = fileStruct.old_thapan_suppressions.Supp;
 % irr = fileStruct.old_thapan_suppressions_below500.Irr;
 % supp = fileStruct.old_thapan_suppressions_below500.Supp;
 rodY = 1.8;
-ofY = 1.3;
-ofB = 1.3;
+ofY = 1.4;
+ofB = 1.4;
 rodB = 1.8;
-mp = 0.3;
-ma = 0.2;
+mp = 0.2;
+ma = 0.35;
 ivdb = 4.3;
 a2 = .45;
-a3 = 2.5;
+a3 = 2.8;
 
 wavelengthsThapan = wavelengths; % save for later plotting
 %correct for dilated pupils

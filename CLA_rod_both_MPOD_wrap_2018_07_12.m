@@ -6,42 +6,41 @@ fileStruct = loadAllTextFiles2();
 
 
 ofYtest = 1.3;%1.40;%
-ofYRange =ofYtest:0.5:ofYtest;
-% ofYRange = 0.1:.1:2;   % ofY = 1 for original model ON WARM SIDE
+% ofYRange =ofYtest:0.5:ofYtest;
+ofYRange = 0.1:.1:2;   % ofY = 1 for original model ON WARM SIDE
 
-ofBtest = 1.3;%0.81;%
-ofBRange =ofBtest:0.5:ofBtest;
-% ofBRange =0.1:0.1:2;   % ofB = 1 for original model ON COOL SIDE
+ofBtest = 1.4*.35;%0.81;%
+% ofBRange =ofBtest:0.5:ofBtest;
+ofBRange =0.5:0.1:2;   % ofB = 1 for original model ON COOL SIDE
 
 rodYtest = 1.8;%1.1;%
-rodYRange =rodYtest:0.5:rodYtest;
-% rodYRange = 0.1:.1:2;   % rodY = 0 for original model
+% rodYRange =rodYtest:0.5:rodYtest;
+rodYRange = 0.1:.1:2;   % rodY = 0 for original model
 
 rodBtest = 1.8;%1.28;%
-rodBRange =rodBtest:0.5:rodBtest;
-% rodBRange = 0.1:0.1:5;   % rodB = 0 for original model
+% rodBRange =rodBtest:0.5:rodBtest;
+rodBRange = 0.1:0.1:2;   % rodB = 0 for original model
 
 mptest = 0.2;       % MPOD
 mpRange =mptest:0.01:mptest;
 % mpRange = 0.1:0.05:.6;   % mp = 0 for original model
 
-matest = 0.2;       % MPOD attenuation
+matest = 0.35;       % MPOD attenuation
 maRange =matest:0.01:matest;
 % maRange = 0.2:0.05:.4;   % ma = 0 for original model
 
 
 vdBasetest = 4.3;
 vdBaseRange = vdBasetest:0.1:vdBasetest;
-% vdBaseRange = 3:0.1:7;
+% vdBaseRange = 0:0.05:1;
 
-a2test = .45;
-a2Range = a2test:0.1:a2test;
-% a2Range = 0.0:0.05:2;
+a2test = 0.45;
+% a2Range = a2test:0.1:a2test;
+a2Range = 0.1:0.05:1;
 
-a3test = 2.5;
-a3Range = a3test:0.1:a3test;
-% a3Range = 2:0.1:3;
-
+a3test = 2.55;
+% a3Range = a3test:0.1:a3test;
+a3Range = 1:0.1:3;
 
 
 rsq1Best = 0;
@@ -61,13 +60,33 @@ minCBest = 0;
 
 %% Loops
 tic
+indexRodY = 1;
+msgRodY = sprintf('Loop %d of %d',0,length(rodYRange));
+f1 = waitbar(0,msgRodY);
+indexOfY = 1;
+msgOfY = sprintf('Loop %d of %d',0,length(ofYRange));
+f2 = waitbar(0,msgOfY);
+indexOfB = 1;
+msgOfB = sprintf('Loop %d of %d',0,length(ofBRange));
+f3 = waitbar(0,msgOfB);
 for irodY = rodYRange
     irodY
     toc
+    indexRodYRatio = indexRodY/length(rodYRange);
+    msgRodY = sprintf('irodY Loop %d of %d',indexRodY,length(rodYRange));
+    waitbar(indexRodYRatio,f1,msgRodY);
+    indexOfY = 1;
     for iOFY = ofYRange
         iOFY
+        indexOfYRatio = indexOfY/length(ofYRange);
+        msgOfY = sprintf('iOFY Loop %d of %d',indexOfY,length(ofYRange));
+        waitbar(indexOfYRatio,f2,msgOfY);
+        indexOfB = 1;
         for iOFB = ofBRange
             %iOFB
+            indexOfBRatio = indexOfB/length(ofBRange);
+            msgOfB = sprintf('iOFB Loop %d of %d',indexOfB,length(ofBRange));
+            waitbar(indexOfBRatio,f3,msgOfB);
             for irodB = rodBRange
                 for imp = mpRange
                     for ima = maRange
@@ -90,9 +109,10 @@ for irodY = rodYRange
                                     
                                     if rsq > maxrsq
                                         maxrsq = rsq
-                                        generateMonochromaticSpectralResponseOfModel_Func_Test3(irodY, iOFY, iOFB, irodB, imp, ima,ivdb,fileStruct,true,ia2,ia3);
+%                                         generateMonochromaticSpectralResponseOfModel_Func_Test3(irodY, iOFY, iOFB, irodB, imp, ima,ivdb,fileStruct,true,ia2,ia3);
+%                                         CLA_vs_BlackBodyCCT_func(irodY, iOFY, iOFB, irodB, imp, ima,ivdb,fileStruct,true,ia2,ia3);
                                         rsq1Best = rsqs(1);
-                                        rsq2Best = rsqs(2);
+%                                         rsq2Best = rsqs(2);
 %                                         rsq3Best = rsqs(3);
                                         rodYBest = irodY;
                                         ofYBest = iOFY;
@@ -113,13 +133,16 @@ for irodY = rodYRange
                     end
                 end
             end
+            indexOfB = indexOfB +1;
         end
+        indexOfY = indexOfY+1;
     end
+    indexRodY = indexRodY+1;
 end
 %max_R2 = round(maxrsq,4)
 % ofY___rodY = [ofYBest rodYBest]
 % ofB___rodB = [ofBBest rodBBest]
 rqsBest = [rsq1Best rsq2Best rsq3Best]
 ofY___rodY___ofB___rodB___VDBase = [ofYBest rodYBest ofBBest rodBBest vdBaseBest] % display optimized coefficients
-a2___a3 = [a2Best,a3Best]
-mp___ma = [mpBest,maBest]
+vd___a2___a3 = [vdBaseBest,a2Best,a3Best]
+% mp___ma = [mpBest,maBest]

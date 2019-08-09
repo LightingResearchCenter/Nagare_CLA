@@ -62,14 +62,14 @@ supp_G = fileStruct.white_light_data.Supp(logical(fileStruct.white_light_data.G)
 % G = fileStruct.spd_Lumileds_4000K_1lux;
 
 rodY = 1.8;
-ofY = 1.3;
-ofB = 1.3;
+ofY = 1.4;
+ofB = 1.4;
 rodB = 1.8;
-mp = 0.3;
-ma = 0.2;
+mp = 0.2;
+ma = 0.35;
 ivdb = 4.3;
 a2 = .45;
-a3 = 2.5;
+a3 = 2.8;
 
 % CLA_A = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(A, lux_A,fileStruct);
 % CLA_B = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(B, lux_B,fileStruct);

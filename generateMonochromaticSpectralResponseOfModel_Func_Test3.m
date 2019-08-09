@@ -66,7 +66,7 @@ maxrsq = 1 - (sum(Serr)/sum(Stot));
 if TFplot 
 %figure(1)
 %hold off
-figure(2)
+figure(1)
 plot(wave,Efficiency,'k--')
 axis([400 650 0 1.2])
 hold on

@@ -7,11 +7,11 @@ spd = spd(:,2,:);
 spd = (spd .* tar_E)/Lxy23Sep05([wavelength_spd,spd]);
 
 GAI_test = GamutArea23Sep05_test([wavelength_spd, spd])' * 13600;
-vd = exp(1.1-(1.1./(1+GAI_test)));
+vd = 1;%exp(1.1-(1.1./(1+GAI_test)));
 
 rodY = rodY * vd;
-%ofY = ofY * vd;
-%ofB = ofB * vd;
+ofY = ofY * vd;
+ofB = ofB * vd;
 rodB = rodB * vd;
 
 
