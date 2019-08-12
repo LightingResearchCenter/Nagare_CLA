@@ -1,4 +1,4 @@
-function CLA = CLA_rod_both_MPOD_calculation_Test5(spd, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,varargin)
+function CLA = CLA_rod_both_MPOD_calculation_Test5(spd, rodY, ofY, ofB, rodB, mp, ma,ivdb,g,fileStruct,varargin)
 
 if numel(varargin) == 0 
     testA2 = 0.7;
@@ -26,10 +26,7 @@ spd = spd(:,2:end);
 % vd = 0.72 + (ivdb - 0.72)./(1 + (DC./0.05).^3.7); %2700 MinTint
 % vd = 0.72 + (ivdb - 0.72)./(1 + (DC./0.05).^12.0); %3500 MinTint
 % vd = 1.021368 + (ivdb - 1.021368)./(1 + (DC./0.04463785).^11.85674);
-rodY = rodY * 4.3;
-ofY = ofY * 4.3;
-ofB = ofB * ivdb*4.3;
-rodB = rodB * ivdb*4.3;
+
 
 
 Vlamda = fileStruct.Vlamda;
@@ -59,6 +56,14 @@ M = interp1(Melanopsin(:,1),Melanopsin(:,2),wavelength_spd,'linear',0.0);
 %M = M/macularTi;
 M = M/max(M);
 
+k =  0.2616;
+bminusy = (trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,Vlambda.*spd));
+vd = 0.75 + 0.1594.*(atan(-1698.*bminusy+26.38));
+rodY = rodY * ivdb;
+ofY = ofY * ivdb;
+ofB = ofB * ivdb*vd;
+rodB = rodB * ivdb*vd;
+
 %----------------CHANGE HERE for MPOD---------------------------------------
 % p = 0.35; % Percent corneal stimulus passing through macula **** ma
 % MPOD = 0.0; % Estimated MPOD of the subject to  put in calculations *** mp
@@ -80,7 +85,7 @@ scone_over_mel = scone_response./mel_response;
 BF_eff_func = fileStruct.CIE31by1;
 wave = BF_eff_func(:,1);
 BF_Vlambda = interp1(wave,BF_eff_func(:,3),wavelength_spd,'linear',0.0);
-g = 1; 
+
 %g = scone_over_mel; 
 BrightnessFunction = BF_Vlambda + g.*Scone;
 brightness = BrightnessFunction/max(BrightnessFunction); %  normalize to max=1 (luminous efficiency)
@@ -120,7 +125,7 @@ P = spd;
             CS2 = (a2*(trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,Vlambda.*spd))-b2);
             CS2(CS2 < 0) = 0; % This is the important diode operator, the (b-y) term cannot be less than zero
 
-            Rod = (a3*(1-exp(-trapz(wavelength_spd,Vprime.*spd)./rodSat))).*byIdx; %*(1 - exp(-20*(trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,V10.*spd))));
+            Rod = (a3.*(rod_over_brightness).*(1-exp(-trapz(wavelength_spd,Vprime.*spd)./rodSat))).*byIdx; %*(1 - exp(-20*(trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,V10.*spd))));
             %disp(Rod)
             
     %         CS = (CS1 + CS2 - Rod);

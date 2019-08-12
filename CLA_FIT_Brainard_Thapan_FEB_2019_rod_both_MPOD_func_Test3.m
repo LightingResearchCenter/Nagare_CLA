@@ -1,4 +1,4 @@
-function [maxrsq,minA,minB,minC] = CLA_FIT_Brainard_Thapan_FEB_2019_rod_both_MPOD_func_Test3(rodY,ofY,ofB,rodB,mp,ma,ivbd,fileStruct, varargin)
+function [maxrsq,minA,minB,minC] = CLA_FIT_Brainard_Thapan_FEB_2019_rod_both_MPOD_func_Test3(rodY,ofY,ofB,rodB,mp,ma,ivbd,g,fileStruct, varargin)
 
 if numel(varargin) == 0 
     testA2 = 0.7;
@@ -14,18 +14,18 @@ else
 end 
 
 %% Thapan Data
-% supp_A = fileStruct.old_thapan.Supp(~fileStruct.old_thapan.warm);
-supp_A = fileStruct.old_thapan.Supp;
-% A = [fileStruct.old_thapan.Wavelengths,fileStruct.old_thapan.SPD(:,~fileStruct.old_thapan.warm)];
-A = [fileStruct.old_thapan.Wavelengths,fileStruct.old_thapan.SPD];
-CLA_A = CLA_rod_both_MPOD_calculation_Test2(A, rodY, ofY, ofB, rodB, mp, ma,ivbd,fileStruct,testA2,testA3);
+supp_A = fileStruct.old_thapan.Supp(~fileStruct.old_thapan.warm);
+% supp_A = fileStruct.old_thapan.Supp;
+A = [fileStruct.old_thapan.Wavelengths,fileStruct.old_thapan.SPD(:,~fileStruct.old_thapan.warm)];
+% A = [fileStruct.old_thapan.Wavelengths,fileStruct.old_thapan.SPD];
+CLA_A = CLA_rod_both_MPOD_calculation_Test2(A, rodY, ofY, ofB, rodB, mp, ma,ivbd,g,fileStruct,testA2,testA3);
 
 %% Brainard et al. monochromatic suppressions and spectra
-% supp_B = fileStruct.old_brainard.Supp(~fileStruct.old_brainard.warm);
-supp_B = fileStruct.old_brainard.Supp;
-% B = [fileStruct.old_brainard.Wavelengths,fileStruct.old_brainard.SPD(:,~fileStruct.old_brainard.warm)];
-B = [fileStruct.old_brainard.Wavelengths,fileStruct.old_brainard.SPD];
-CLA_B = CLA_rod_both_MPOD_calculation_Test2(B, rodY, ofY, ofB, rodB, mp, ma,ivbd,fileStruct,testA2,testA3);
+supp_B = fileStruct.old_brainard.Supp(~fileStruct.old_brainard.warm);
+% supp_B = fileStruct.old_brainard.Supp;
+B = [fileStruct.old_brainard.Wavelengths,fileStruct.old_brainard.SPD(:,~fileStruct.old_brainard.warm)];
+% B = [fileStruct.old_brainard.Wavelengths,fileStruct.old_brainard.SPD];
+CLA_B = CLA_rod_both_MPOD_calculation_Test2(B, rodY, ofY, ofB, rodB, mp, ma,ivbd,g,fileStruct,testA2,testA3);
 %% Compute logistic
 CLA = vertcat(CLA_A', CLA_B');
 supp = vertcat(supp_A, supp_B);

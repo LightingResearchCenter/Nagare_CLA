@@ -1,4 +1,4 @@
-function [maxrsq,minA,minB,minC] = CLA_McClung_WL_Lumileds_rod_MPOD_func_Test3(rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,varargin)
+function [maxrsq,minA,minB,minC] = CLA_McClung_WL_Lumileds_rod_MPOD_func_Test3(rodY, ofY, ofB, rodB, mp, ma,ivdb,g,fileStruct,varargin)
 
     typeoffit = 'original'; % best or original **** CHECK crange for BEST CASE
 if numel(varargin) == 0 
@@ -21,12 +21,12 @@ end
     
     %% Combine SPDs 
 
-    CLA = CLA_rod_both_MPOD_calculation_Test2(white_light_data, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,testA2,testA3);
+    CLA = CLA_rod_both_MPOD_calculation_Test2(white_light_data, rodY, ofY, ofB, rodB, mp, ma,ivdb,g,fileStruct,testA2,testA3);
 
     CLA = CLA';
     supp = fileStruct.white_light_data.Supp(~fileStruct.white_light_data.warm);
 %     supp = fileStruct.white_light_data.Supp;
-
+% 
 
 
 %% search for min error using least squares method

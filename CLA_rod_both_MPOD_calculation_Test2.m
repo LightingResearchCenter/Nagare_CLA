@@ -1,4 +1,4 @@
-function CLA = CLA_rod_both_MPOD_calculation_Test2(spd, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,varargin)
+function CLA = CLA_rod_both_MPOD_calculation_Test2(spd, rodY, ofY, ofB, rodB, mp, ma,ivdb,g,fileStruct,varargin)
 
 if numel(varargin) == 0 
     testA2 = 0.7;
@@ -18,13 +18,13 @@ wavelength_spd = spd(:,1);
 spd = spd(:,2:end);
 
 GAI_test = GamutArea23Sep05_test([wavelength_spd, spd],fileStruct)' * 13600;
-vd = ivdb;
-% vd = ivdb.^(1 - (.01./(.01+GAI_test)));%exp(1.1-(1.1./(1+GAI_test)));%
+% vd = ivdb;
+vd = ivdb.^(1 - (.01./(.01+GAI_test)));%exp(1.1-(1.1./(1+GAI_test)));%
 
-rodY = rodY*4.3*vd;
-ofY = ofY*4.3*vd;
-ofB = ofB *4.3* vd;
-rodB = rodB*4.3 * vd;
+rodY = rodY*vd;
+ofY = ofY*vd;
+ofB = ofB * vd;
+rodB = rodB* vd;
 
 Vlamda = fileStruct.Vlamda;
 Vlambda = interp1(Vlamda(:,1),Vlamda(:,2),wavelength_spd,'linear',0.0);
@@ -74,13 +74,13 @@ scone_over_mel = scone_response./mel_response;
 BF_eff_func = fileStruct.CIE31by1;
 wave = BF_eff_func(:,1);
 BF_Vlambda = interp1(wave,BF_eff_func(:,3),wavelength_spd,'linear',0.0);
-g = 1; 
+% g = 1; 
 %g = scone_over_mel; 
 BrightnessFunction = BF_Vlambda + g.*Scone;
 brightness = BrightnessFunction/max(BrightnessFunction); %  normalize to max=1 (luminous efficiency)
 
 brightness_response = trapz(wavelength_spd,brightness.*spd);
-rod_over_brightness = (rod_response./(vl_response + scone_response)).^(0.7);%(rod_response./brightness_response).^(0.7);
+rod_over_brightness = (rod_response./(vl_response + g.*scone_response)).^(0.7);%(rod_response./brightness_response).^(0.7);
 c1 = 0.81;
 c2 = 0.3;
 rod_over_brightness_E = c1*exp(1-c2./rod_over_brightness);
@@ -114,7 +114,7 @@ P = spd;
             CS2 = (a2*(trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,Vlambda.*spd))-b2);
             CS2(CS2 < 0) = 0; % This is the important diode operator, the (b-y) term cannot be less than zero
 
-            Rod = (a3*(1-exp(-trapz(wavelength_spd,Vprime.*spd)./rodSat))).*byIdx; %*(1 - exp(-20*(trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,V10.*spd))));
+            Rod = (a3.*(rod_over_brightness).*(1-exp(-trapz(wavelength_spd,Vprime.*spd)./rodSat))).*byIdx; %*(1 - exp(-20*(trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,V10.*spd))));
             %disp(Rod)
             
     %         CS = (CS1 + CS2 - Rod);
