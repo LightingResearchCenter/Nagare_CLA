@@ -2,24 +2,25 @@
 clear;
 clc;
 fileStruct = loadAllTextFiles2();
-%% Initialize Loop Variables
+
+% %% Initialize Loop Variables
 
 
-ofYtest = 1.3;%1.40;%
+ofYtest = 1.5;%1.40;%
 ofYRange =ofYtest:0.5:ofYtest;
-% ofYRange = 0.1:.1:2;   % ofY = 1 for original model ON WARM SIDE
+% ofYRange =3.5:.1:5;   % ofY = 1 for original model ON WARM SIDE
 
-ofBtest = 1.3;%0.81;%
-% ofBRange =ofBtest:0.5:ofBtest;
-ofBRange =0.4:0.1:1.4;   % ofB = 1 for original model ON COOL SIDE
+ofBtest = 1.5;%0.81;%
+ofBRange =ofBtest:0.5:ofBtest;
+% ofBRange =.5:0.1:1.5;   % ofB = 1 for original model ON COOL SIDE
 
-rodYtest = 1.8;%1.1;%
+rodYtest = 2.05;%1.1;%
 rodYRange =rodYtest:0.5:rodYtest;
-% rodYRange = 0.1:.1:2;   % rodY = 0 for original model
+% rodYRange = 1:.1:3;   % rodY = 0 for original model
 
-rodBtest = 1.8;%1.28;%
+rodBtest = 2.05;%1.28;%
 rodBRange =rodBtest:0.5:rodBtest;
-% rodBRange = 0.1:0.1:2;   % rodB = 0 for original model
+% rodBRange = 1.8:0.1:3.5;   % rodB = 0 for original model
 
 mptest = 0.2;       % MPOD
 mpRange =mptest:0.01:mptest;
@@ -30,21 +31,21 @@ maRange =matest:0.01:matest;
 % maRange = 0.2:0.05:.4;   % ma = 0 for original model
 
 
-vdBasetest = 4.3;
-% vdBaseRange = vdBasetest:0.1:vdBasetest;
-vdBaseRange = 5:0.1:6;
+vdBasetest =3.8;
+vdBaseRange = vdBasetest:0.1:vdBasetest;
+% vdBaseRange =3:0.1:5;
 
-a2test = 0.45;
+a2test = 1;
 a2Range = a2test:0.1:a2test;
-% a2Range = 0.1:0.05:1;
+% a2Range =  0:.1:2;
 
-a3test = 2.55;
-% a3Range = a3test:0.1:a3test;
-a3Range = 1:0.1:3;
+a3test = 2;
+a3Range = a3test:0.1:a3test;
+% a3Range = 2:0.1:4;
 
-gtest = 0.5;
+gtest = .2;
 gRange = gtest:0.1:gtest;
-% gRange = 0:.5:3;
+% gRange = 0:.1:2;
 
 rsq1Best = 0;
 rsq2Best = 0;
@@ -73,6 +74,7 @@ f2 = waitbar(0,msgOfY);
 indexOfB = 1;
 msgOfB = sprintf('Loop %d of %d',0,length(ofBRange));
 f3 = waitbar(0,msgOfB);
+
 for irodY = rodYRange
     irodY
     toc
@@ -99,12 +101,12 @@ for irodY = rodYRange
                                 for ia3 = a3Range
                                     for ig = gRange
                                         t= toc;
-                                        [rsqs(1),minA(1),minB(1),minC(1)] = CLA_McClung_WL_Lumileds_rod_MPOD_func_Test3(irodY,iOFY,iOFB,iOFB*1.39,imp,ima,ivdb,ig,fileStruct,ia2,ia3);
+                                        [rsqs(1),minA(1),minB(1),minC(1)] = CLA_McClung_WL_Lumileds_rod_MPOD_func_Test3(irodY,iOFY,iOFB,irodB,imp,ima,ivdb,ig,fileStruct,ia2,ia3);
                                         %rsq = CLA_McClung_WL_Lumileds_warm_4K_rod_MPOD_func(irodY,iOFY,iOFB,irodB,imp,ima,fileStruct);
                                         %rsq = CLA_McClung_WL_Lumileds_Cool_rod_MPOD_func(irodY,iOFY,iOFB,irodB,imp,ima,fileStruct); % no ofb yet
                                         
                                         %                                     rsq2 = CLA_FIT_Brainard_Thapan_FEB_2019_rod_both_MPOD_func_Test(irodY,iOFY,iOFB,irodB,imp,ima,fileStruct);
-                                        [rsqs(2),minA(2),minB(2),minC(2)] = CLA_FIT_Brainard_Thapan_FEB_2019_rod_both_MPOD_func_Test3(irodY,iOFY,iOFB,iOFB*1.39,imp,ima,ivdb,ig,fileStruct,ia2,ia3);
+                                        [rsqs(2),minA(2),minB(2),minC(2)] = CLA_FIT_Brainard_Thapan_FEB_2019_rod_both_MPOD_func_Test3(irodY,iOFY,iOFB,irodB,imp,ima,ivdb,ig,fileStruct,ia2,ia3);
                                         %rsqs(3) = generateMonochromaticSpectralResponseOfModel_efficacy_Func(irodY, iOFY, iOFB, irodB, imp, ima,ivdb,fileStruct);
                                         %                                     rsqs(3) = generateMonochromaticSpectralResponseOfModel_Func_Test3(irodY, iOFY, iOFB, irodB, imp, ima,ivdb,fileStruct,true,ia2,ia3);
                                         
@@ -114,7 +116,7 @@ for irodY = rodYRange
                                         
                                         if rsq > maxrsq
                                             maxrsq = rsq
-                                            %                                         generateMonochromaticSpectralResponseOfModel_Func_Test3(irodY, iOFY, iOFB, irodB, imp, ima,ivdb,fileStruct,true,ia2,ia3);
+%                                             generateMonochromaticSpectralResponseOfModel_Func_Test3(irodY, iOFY, iOFB, irodB, imp, ima,ivdb,ig,fileStruct,true,ia2,ia3);
                                             %                                         CLA_vs_BlackBodyCCT_func(irodY, iOFY, iOFB, irodB, imp, ima,ivdb,fileStruct,true,ia2,ia3);
                                             rsq1Best = rsqs(1);
                                             rsq2Best = rsqs(2);
@@ -149,7 +151,13 @@ end
 %max_R2 = round(maxrsq,4)
 % ofY___rodY = [ofYBest rodYBest]
 % ofB___rodB = [ofBBest rodBBest]
+generateMonochromaticSpectralResponseOfModel_Func_Test3(rodYBest, ofYBest, ofBBest, rodBBest, mpBest, maBest,vdBaseBest,gBest,fileStruct,true,a2Best,a3Best);
+CLA_vs_BlackBodyCCT_func(rodYBest, ofYBest, ofBBest, rodBBest, mpBest, maBest,vdBaseBest,gBest,fileStruct,true,a2Best,a3Best);
 rqsBest = [rsq1Best rsq2Best rsq3Best]
 ofY___rodY___ofB___rodB___VDBase = [ofYBest rodYBest ofBBest rodBBest vdBaseBest] % display optimized coefficients
 vd___a2___a3 = [vdBaseBest,a2Best,a3Best]
+gBest
 % mp___ma = [mpBest,maBest]
+close(f1)
+close(f2)
+close(f3)

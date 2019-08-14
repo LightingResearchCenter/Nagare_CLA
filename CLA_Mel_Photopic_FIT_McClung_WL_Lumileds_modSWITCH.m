@@ -61,15 +61,16 @@ supp_G = fileStruct.white_light_data.Supp(logical(fileStruct.white_light_data.G)
 % lux_G = ZG(:,4)';    
 % G = fileStruct.spd_Lumileds_4000K_1lux;
 
-rodY = 1.8;
-ofY = 1.4;
-ofB = 1.4;
-rodB = 1.8;
+rodY = 2.05;
+ofY = 1.5;
+ofB = 1.5;
+rodB = 2.05;
 mp = 0.2;
 ma = 0.35;
-ivdb = 4.3;
-a2 = .45;
-a3 = 2.8;
+ivdb = 3.8;
+a2 = 1;
+a3 = 2;
+g = 0.2;
 
 % CLA_A = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(A, lux_A,fileStruct);
 % CLA_B = CLA_postBerlinCorrMelanopsin_06Feb2014_1luxspd(B, lux_B,fileStruct);
@@ -81,13 +82,13 @@ a3 = 2.8;
 
 
 
-CLA_A = CLA_rod_both_MPOD_calculation_Test5(ZA, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,a2,a3);
-CLA_B = CLA_rod_both_MPOD_calculation_Test5(ZB, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,a2,a3);
-CLA_C = CLA_rod_both_MPOD_calculation_Test5(ZC, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,a2,a3);
-CLA_D = CLA_rod_both_MPOD_calculation_Test5(ZD, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,a2,a3);
-CLA_E = CLA_rod_both_MPOD_calculation_Test5(ZE, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,a2,a3);
-CLA_F = CLA_rod_both_MPOD_calculation_Test5(ZF, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,a2,a3);
-CLA_G = CLA_rod_both_MPOD_calculation_Test5(ZG, rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,a2,a3);
+CLA_A = CLA_rod_both_MPOD_calculation_Test6(ZA, rodY, ofY, ofB, rodB, mp, ma,ivdb,g,fileStruct,a2,a3);
+CLA_B = CLA_rod_both_MPOD_calculation_Test6(ZB, rodY, ofY, ofB, rodB, mp, ma,ivdb,g,fileStruct,a2,a3);
+CLA_C = CLA_rod_both_MPOD_calculation_Test6(ZC, rodY, ofY, ofB, rodB, mp, ma,ivdb,g,fileStruct,a2,a3);
+CLA_D = CLA_rod_both_MPOD_calculation_Test6(ZD, rodY, ofY, ofB, rodB, mp, ma,ivdb,g,fileStruct,a2,a3);
+CLA_E = CLA_rod_both_MPOD_calculation_Test6(ZE, rodY, ofY, ofB, rodB, mp, ma,ivdb,g,fileStruct,a2,a3);
+CLA_F = CLA_rod_both_MPOD_calculation_Test6(ZF, rodY, ofY, ofB, rodB, mp, ma,ivdb,g,fileStruct,a2,a3);
+CLA_G = CLA_rod_both_MPOD_calculation_Test6(ZG, rodY, ofY, ofB, rodB, mp, ma,ivdb,g,fileStruct,a2,a3);
 
 % %**********
 % Compute logistic

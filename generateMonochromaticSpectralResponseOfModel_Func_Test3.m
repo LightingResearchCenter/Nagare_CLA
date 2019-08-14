@@ -1,4 +1,4 @@
-function [maxrsq ]  = generateMonochromaticSpectralResponseOfModel_Func_Test3(rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,TFplot,a2,a3)
+function [maxrsq ]  = generateMonochromaticSpectralResponseOfModel_Func_Test3(rodY, ofY, ofB, rodB, mp, ma,ivdb,g,fileStruct,TFplot,a2,a3)
 
 %Brainard and Thappan Data
 % [wavelength  response]
@@ -37,7 +37,7 @@ for j = 1:length(wave)
     P = spd.*irrad; % scaled spd
     
     % CLA is "Circadian Light" as given by the phototranduction model
-    CLA = CLA_rod_both_MPOD_calculation_Test5([wave P], rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct,a2,a3);
+    CLA = CLA_rod_both_MPOD_calculation_Test6([wave P], rodY, ofY, ofB, rodB, mp, ma,ivdb,g,fileStruct,a2,a3);
     
     if ismonotonic(CLA)
         criterionIrrad(j) = interp1q(CLA,irrad',criterion); % find the irradiance that gives the criterion response
@@ -74,7 +74,7 @@ plot(waveBT,BT,'rd')
 % HL1 = legend('Original Model', 'Brainard and Thapan');
 % HL1 = legend('Brainard and Thapan: Rod-Brightness model', 'rodB-ofB 0.1-1.0 a3-1.0, rodY-ofY 0.1-1.2, g3');
 %         HL1 = legend('E-ratio; g= s/mel; ofB 0.85, rodB 0.75, ofY 1.5, rodY 1.1', 'Brainard and Thapan 0.2MPOD35');
-HL1 = legend(sprintf('Parameters: ofB %0.2f, rodB %0.2f, ofY %0.2f, rodY %0.2f',ofB,rodB,ofY,rodY),'Brainard and Thapan 0.2MPOD35');
+HL1 = legend(sprintf('ofB%0.2f, rodB%0.2f, ofY%0.2f, rodY%0.2f, a2%0.2f, a3%0.2f',ofB,rodB,ofY,rodY,a2,a3),'Brainard and Thapan 0.2MPOD35');
 % HL1 = legend('Rod-brightness: ofY = ofB = 1.4, rodY = 0.2, rodB = 0.08', 'Brainard and Thapan: 0.2 MPOD at 35%');
 xlabel('Wavelength (nm)','FontSize',16);
 ylabel('Efficiency','FontSize',16);

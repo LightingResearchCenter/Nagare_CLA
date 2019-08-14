@@ -24,16 +24,16 @@ supp = fileStruct.old_thapan_suppressions.Supp;
 % wavelengths = fileStruct.old_thapan_suppressions_below500.Wavelengths;
 % irr = fileStruct.old_thapan_suppressions_below500.Irr;
 % supp = fileStruct.old_thapan_suppressions_below500.Supp;
-rodY = 1.8;
-ofY = 1.4;
-ofB = 1.4;
-rodB = 1.8;
+rodY = 2.05;
+ofY = 1.5;
+ofB = 1.5;
+rodB = 2.05;
 mp = 0.2;
 ma = 0.35;
-ivdb = 4.3;
-a2 = .45;
-a3 = 2.8;
-
+ivdb = 3.8;
+a2 = 1;
+a3 = 2;
+g = 0.2;
 wavelengthsThapan = wavelengths; % save for later plotting
 %correct for dilated pupils
 irr = 8.6*irr; 
@@ -54,7 +54,7 @@ for i1 = 1:length(wavelengths)
 %     lux_A(ind) = Lxy23Sep05([A(:,1) A(:,2)]);
     irrad_A(ind) = trapz(A(:,1), A(:,2));
 %     CLA_A(i1) = CLA_postBerlinCorrMelanopsin_06Feb2014([A(:,1) A(:,2)],fileStruct);
-    CLA_A(ind) = CLA_rod_both_MPOD_calculation_Test5([A(:,1) A(:,2)], rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct2,a2,a3);
+    CLA_A(ind) = CLA_rod_both_MPOD_calculation_Test6([A(:,1) A(:,2)], rodY, ofY, ofB, rodB, mp, ma,ivdb,g,fileStruct2,a2,a3);
 Melanopic_A(ind) = 843*trapz(A(:,1), MelanopicInterp.*A(:,2));
     %CLA(i) = spdtolux([A(:,1) A(:,2)]);
     %temp(i) = trapz(A(:,1), A(:,2));
@@ -92,7 +92,7 @@ for i1 = 1:length(wavelengths)
     supp_B(ind) = supp(ind);
 %     lux_B(i1) = Lxy23Sep05([A(:,1) A(:,2)]);
     irrad_B(ind) = trapz(A(:,1), A(:,2));
-    CLA_B(ind) = CLA_rod_both_MPOD_calculation_Test5([A(:,1) A(:,2)], rodY, ofY, ofB, rodB, mp, ma,ivdb,fileStruct2,a2,a3);
+    CLA_B(ind) = CLA_rod_both_MPOD_calculation_Test6([A(:,1) A(:,2)], rodY, ofY, ofB, rodB, mp, ma,ivdb,g,fileStruct2,a2,a3);
     Melanopic_B(ind) = 843*trapz(A(:,1), MelanopicInterp.*A(:,2));
 end
 

@@ -1,4 +1,4 @@
-function CLA = CLA_rod_both_MPOD_calculation_Test5(spd, rodY, ofY, ofB, rodB, mp, ma,ivdb,g,fileStruct,varargin)
+function CLA = CLA_rod_both_MPOD_calculation_Test2(spd, rodY, ofY, ofB, rodB, mp, ma,ivdb,g,fileStruct,varargin)
 
 if numel(varargin) == 0 
     testA2 = 0.7;
@@ -18,16 +18,17 @@ wavelength_spd = spd(:,1);
 spd = spd(:,2:end);
 
 % GAI_test = GamutArea23Sep05_test([wavelength_spd, spd],fileStruct)' * 13600;
-[DC] = abs(calcDuv2([wavelength_spd, spd],fileStruct));
-% vd = ivdb.^(1-(0.01./(0.01-(abs(DC.*100)))));%exp(1.1-(1.1./(1+GAI_test)));%
-% vd = .6 + ((ivdb - 0.6)./(1 + (DC./0.06).^2.5));
-% vd = 0.715843 + (ivdb - 0.715843)/(1 + (DC/0.04415223)^2.891163);
-vd = 0.73 + (ivdb - 0.73)./(1 + (DC./0.05).^6.2); %3000kMinTint
-% vd = 0.72 + (ivdb - 0.72)./(1 + (DC./0.05).^3.7); %2700 MinTint
-% vd = 0.72 + (ivdb - 0.72)./(1 + (DC./0.05).^12.0); %3500 MinTint
-% vd = 1.021368 + (ivdb - 1.021368)./(1 + (DC./0.04463785).^11.85674);
+Duv = calcDuv2([wavelength_spd,spd],fileStruct);
+vd = 1+((ivdb-1)./(1+(Duv/0.01).^5));
+
+% vd = ivdb;
+% vd = ivdb.^(1 - (.01./(.01+GAI_test)));%exp(1.1-(1.1./(1+GAI_test)));%
 
 
+rodY = rodY*vd;
+ofY = ofY*vd;
+ofB = ofB;
+rodB = rodB* vd;
 
 Vlamda = fileStruct.Vlamda;
 Vlambda = interp1(Vlamda(:,1),Vlamda(:,2),wavelength_spd,'linear',0.0);
@@ -56,14 +57,6 @@ M = interp1(Melanopsin(:,1),Melanopsin(:,2),wavelength_spd,'linear',0.0);
 %M = M/macularTi;
 M = M/max(M);
 
-k =  0.2616;
-bMinusy = (trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,Vlambda.*spd));
-chroma = 0.75 + 0.1594.*(atan(-1698.*bMinusy+26.38));
-rodY = rodY .* vd;
-ofY = ofY .* vd;
-ofB = ofB .* vd.*chroma;
-rodB = rodB .* vd.*chroma;
-
 %----------------CHANGE HERE for MPOD---------------------------------------
 % p = 0.35; % Percent corneal stimulus passing through macula **** ma
 % MPOD = 0.0; % Estimated MPOD of the subject to  put in calculations *** mp
@@ -85,13 +78,14 @@ scone_over_mel = scone_response./mel_response;
 BF_eff_func = fileStruct.CIE31by1;
 wave = BF_eff_func(:,1);
 BF_Vlambda = interp1(wave,BF_eff_func(:,3),wavelength_spd,'linear',0.0);
-
+% g = 1; 
 %g = scone_over_mel; 
 BrightnessFunction = BF_Vlambda + g.*Scone;
 brightness = BrightnessFunction/max(BrightnessFunction); %  normalize to max=1 (luminous efficiency)
 
 brightness_response = trapz(wavelength_spd,brightness.*spd);
 rod_over_brightness = (rod_response./(vl_response + scone_response)).^(0.7);%(rod_response./brightness_response).^(0.7);
+rod_over_brightness2 = (rod_response./(testA2.*vl_response + g.*scone_response)).^(0.7);%(rod_response./brightness_response).^(0.7);
 c1 = 0.81;
 c2 = 0.3;
 rod_over_brightness_E = c1*exp(1-c2./rod_over_brightness);
@@ -106,7 +100,7 @@ rodSat = rodSat/(diam^2/4*pi)*pi/1700;
 
 a1 = 1.0;      % 1.0 originally        %0.285 % Melanopsin correction factor
 b1 = 0.0;                             %0.01  
-a2 = testA2;  % a_(b-y)  was 0.6201 prior to 06Feb2014     %0.2
+a2 = .25;  % a_(b-y)  was 0.6201 prior to 06Feb2014     %0.2
 b2 = 0.0;                    %0.001
 k =  0.2616;                  %0.31 -- 0.2616 original / 0.2883 for 4K switch / 0.2436 for CG switch                           %0.001
 a3 = testA3;  % a_rod  was 3.3 originally - made 0 now as a new rod threshold term added 
@@ -125,11 +119,11 @@ P = spd;
             CS2 = (a2*(trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,Vlambda.*spd))-b2);
             CS2(CS2 < 0) = 0; % This is the important diode operator, the (b-y) term cannot be less than zero
 
-            Rod = (a3.*(rod_over_brightness).*(1-exp(-trapz(wavelength_spd,Vprime.*spd)./rodSat))).*byIdx; %*(1 - exp(-20*(trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,V10.*spd))));
+            Rod = (a3.*(rod_over_brightness2).*(1-exp(-trapz(wavelength_spd,Vprime.*spd)./rodSat))).*byIdx; %*(1 - exp(-20*(trapz(wavelength_spd,Scone.*spd)-k*trapz(wavelength_spd,V10.*spd))));
             %disp(Rod)
             
     %         CS = (CS1 + CS2 - Rod);
-            CSa = (ofB.*(CS1 + CS2 - Rod - rodB.*(rod_over_brightness).*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat))));
+            CSa = (ofB.*(vd.*CS1 + CS2 - Rod - vd.*rodB.*(rod_over_brightness).*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat))));
             %CS = ofB*(CS1 + CS2 - Rod - rodB*(rod_over_brightness_E)*(1-exp(-trapz(wavelength_spd,Vprime.*spd)/rodSat)));
             
             CSa(CSa < 0) = 0; % Rod inhibition cannot make the CS less than zero
